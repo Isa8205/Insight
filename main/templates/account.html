@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isaiah - Portfolio</title>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> -->
+     <link rel="stylesheet" href="{% static 'css/fontawesome.css' %}">
+    <style>
+        * {
+            box-sizing: border-box;
+            transition: all .35s ease;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: rgb(45, 43, 43);
+            background-image: url(/media/wave.svg);
+            background-size: 100vw 100vh;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+        }
+
+        hr {
+            display: inline-block;
+            width: 20%;
+            margin: 0;
+        }
+
+        h3 {
+            margin: 0;
+        }
+
+        .profile-info {
+            position: fixed;
+            width: 30%;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-info .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding-top: 50px;
+            height: 50vh;
+            width: 85%;
+            border-radius: 10px;
+            position: relative;
+            background-color: blanchedalmond;
+        }
+
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+            position: absolute;
+            top: -50px;
+            /* transition: all .35s; */
+        }
+
+        .profile-pic:hover {
+            transform: scale(1.2);
+
+        }
+
+        .content .top {
+            width: 40%;
+        }
+
+        .top ul {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .content .top ul {
+            display: flex;
+            justify-content: space-between;
+            list-style: none;
+        }
+
+        .top ul li {
+            padding: 6px;
+            background-color: whitesmoke;
+            border-radius: 5px;
+        }
+
+        .top-icons {
+            height: 25px;
+            width: 25px;
+        }
+
+        .middle {
+            background-color: gray;
+            border-radius: 5px;
+            width: 80%;
+            height: 45%;
+            margin-block: 15px;
+        }
+
+        .middle ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            margin-inline: 10px;
+        }
+
+        .middle ul li {
+            background-color: goldenrod;
+            margin-block: 5px;
+            padding-block: 10px;
+            display: flex;
+            align-items: start;
+        }
+
+        .others {
+            margin-left: 30%;
+            background-color: blueviolet;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: end;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            background-color: white;
+            border-radius: 10px;
+            padding: 10px 5px;
+            margin-inline-end: 20px;
+        }
+
+        nav ul li {
+            background-color: grey;
+            color: white;
+            padding: 10px 10px;
+            margin-inline: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color .5s;
+
+        }
+
+        nav ul li:hover {
+            background: linear-gradient(90deg, orange, red);
+        }
+
+        .display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-block: 10px;
+        }
+
+        .display .navlinks {
+            width: 85%;
+            padding: 10px 10px 100px;
+            background-color: white;
+            border-radius: 10px;
+        }
+        
+        .display .navlinks ul {
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .display .navlinks ul li:hover {
+            background: linear-gradient(90deg, orange, red);
+            background-clip: text;
+            --webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.2em;
+            border-bottom: 1px solid orange;
+        }
+
+        .btn {
+            padding-block: 5px;
+            padding-inline: 15px;
+            border-radius: 5px;
+            background: linear-gradient(90deg, orange, red);
+            color: rgb(255, 255, 255);
+            font-size: 1.2rem;
+            border: none;
+            box-shadow: 2px 2px 8px rgba(16, 16, 16, 0.59);
+            transition: all 0.35s;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translate(4px) scale(1.1);
+            box-shadow: 4px 4px 8px rgba(16, 16, 16, 0.59);
+        }
+    </style>
+</head>
+<body>
+    <section class="profile-info">
+
+        <div class="content">
+
+            <img src="{{ MEDIA_URL }}{{ data.profile }}" alt="Profile pic" class="profile-pic">
+
+            <p>{{ data.full_name }}</p>
+            <p>I am a <span>Frontend Developer</span></p>
+
+            <div class="top">
+                <ul>
+                    <li><img class="top-icons" src="/dislike.png" alt="edit details" title="edit"></li>
+                    <li><img class="top-icons" src="/dislike.png" alt="follow" title="follow"></li>
+                    <li><img class="top-icons" src="/dislike.png" alt="message" title="message"></li>
+                </ul>
+            </div>
+
+            <div class="middle">
+                <ul>
+                    <li><span></span> &nbsp; Followers</li>
+                    <li><span></span> &nbsp; Nairobi, Kenya</li>
+                    <li><span>2500</span> &nbsp;Subscribers</li>
+                </ul>
+            </div>
+
+            <div class="bottom">
+                <button class="btn">Download cv <i class="fas fa-download"></i></button>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="others">
+
+        <div class="navbar">
+            
+            <nav>
+                <ul>
+                    <li>Home</li>
+                    <li>Sports</li>
+                    <li>Other</li>
+                </ul>
+            </nav>
+
+        </div>
+
+        <div class="display">
+            <div class="navlinks">
+                <h3>About</h3><hr>
+                <ul>
+                    <li>For you</li>
+                    <li>Trending</li>
+                    <li>Hot</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

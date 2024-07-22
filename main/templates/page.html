@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            background-color: grey;
+            font-family: sans-serif;
+        }
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: start;
+            gap: 10px;
+            margin-inline: 20vw;
+        }
+
+        .article-content {
+            width: 60vw;
+            background-color: white;
+            border-radius: 10px;
+        }
+
+        .author {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+        }
+
+        .author img {
+            height: 100px;
+            width: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .reactions, .advertisements {
+            background-color: white;
+            border-radius: 5px;
+        }
+
+        .cover-image img {
+            border-radius: 10px 10px 0 0;
+        }
+
+        .advert img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px 5px 0 0;
+        }
+
+        footer {
+            background-color: black;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+
+        <nav>
+            <div class="logo">
+                InSight
+            </div>
+            <div class="search-box">
+                <input type="search" name="search" id="search">
+            </div>
+            <div class="profile"></div>
+        </nav>
+        <section class="reactions">
+
+            <div class="content">
+                <ul>
+                    <li>like</li>
+                    <li>comment</li>
+                    <li>Subscribe</li>
+                    <li>Dislike</li>
+                </ul>
+            </div>
+    
+        </section>
+    
+        <section class="article-content">
+    
+            <div class="cover-image">
+                <img src="/media/profiles/Mboso1.png" alt="Cover Image">
+            </div>
+
+            <div class="author">
+                <img src="/media/wave.svg" alt="profile">
+                <div class="info">
+                    <b>Isaiah Kibet</b><br>
+                    <i>10 <sup>th</sup> August, 2025 &dot; 8.5M views</i>
+                </div>
+            </div>
+    
+            <article>
+    
+                <header>
+                    <h2>The rise of AI: is this really how it's going to end for us?</h2>
+                </header>
+    
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, fugit suscipit maiores officiis fugiat iusto rem repellat. Culpa ullam, soluta aperiam iusto optio enim dolor neque eaque nam autem pariatur distinctio voluptatibus voluptas eveniet quaerat eius perferendis porro? Accusantium nam reiciendis praesentium recusandae est quaerat, sunt placeat! Repudiandae eaque porro aliquam alias placeat dolorum laboriosam molestiae? In iusto quos delectus recusandae dicta ducimus obcaecati quasi aliquid quod consectetur. Repellat aliquid cupiditate, maxime asperiores at sed nam tempore atque tempora, similique iste temporibus, labore distinctio commodi sequi voluptas hic eius ipsum repellendus consectetur unde dolore optio dolorem quos. In, veniam sapiente?</p>
+                
+            </article>
+        </section>
+    
+        <section class="advertisements">
+    
+            <div class="advert">
+                <img src="/media/profiles/car1.jpg" alt="Display image">
+    
+                <h4>The heading of the advert</h4>
+    
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit doloribus dolorem recusandae autem. Fugiat, sequi earum sint, commodi ratione quia aliquam nobis quibusdam illum, similique iusto libero sed perferendis unde!</p>
+            </div>
+    
+        </section>
+    </main>
+
+    <footer>
+        <center>&copy; Isaiah Kibet Rop. 2024</center>
+    </footer>
+    
+</body>
+</html>

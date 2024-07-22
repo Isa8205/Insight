@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>{{ message }}</p>
+        {{ form.as_p }}
+        <button>Submit</button>
+        <a href="http://127.0.0.1:8000/admin/">admin</a>
+    </form>
+</body>
+</html>

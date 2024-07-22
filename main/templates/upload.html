@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <!-- <style>
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            margin: 0 auto;
+        }
+
+        .form-input {
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #333;
+        }
+    </style> -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        form {
+            width: 50vw;
+            height: fit-content;
+            padding: 10px;
+            margin-block: 10px;
+        }
+
+        form textarea {
+            display: block;
+            height: 50%;
+            width: 100%;
+            border-radius: 5px;
+            color: black;
+            padding-inline-start: 5px;
+            margin-block: 5px;
+        }
+        .form-input {
+            display: block;
+            height: 30px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ffffff;
+            color: black;
+            margin-block: 5px;
+        }
+
+        form input:focus {
+            border-color: rgba(0, 0, 255, 0.5);
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 0, 255, 0.5);
+        }
+
+        form label {
+            font-weight: 550;
+            margin-block: 6px;
+            display: block;
+            font-family: sans-serif;
+        }
+
+        form a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <form action="" method="post">
+            <p>{{ message }}</p>
+            {% csrf_token %}
+            <label for="author">Author:</label>
+            <input type="text" class="form-input" name="author" placeholder="Enter you name" id="author">
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title" class="form-input" placeholder="Enter the title to your article">
+            <label for="content">Content</label>    
+            <textarea name="content" id="content" placeholder="Enter the content of your article"></textarea>
+            <label for="image">Image</label>
+            <input type="file" name="profile" id="image" class="form-input">
+            <button class="btn">Submit</button>
+            <a href="{% url 'index' %}"><button type="button" class="btn">Home</button></a>
+        </form>
+    </div>
+    
+</body>
+</html>

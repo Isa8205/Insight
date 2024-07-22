@@ -1,0 +1,319 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InSight</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/grid.css'%}">
+
+    <style>
+
+        .articles {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            row-gap: 5px;
+            column-gap: 10px;
+            width: 100%;
+        }
+        
+        @media screen and (max-width: 425px) {
+            .articles {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            color: white;
+            border-radius: 10px;
+            /* width: fit-content; */
+        }
+
+        .card-body {
+            background-color: rgba(0, 0, 0, 0.795);
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .top {
+            display:  flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-block: 10px;
+        }
+
+        .top img {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .content-body .hashtags {
+            /* background-color: teal; */
+            color: rgb(14, 14, 243);
+        }
+
+        .content-body .hashtags ul {
+            margin: 0;
+            padding-block: 5px;
+            padding-inline: 10px;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: start;
+        }
+
+        .content-body .hashtags ul li {
+            background-color: rgba(0, 0, 0, 0.425);
+            padding-block: 4px;
+            padding-inline: 2px;
+            border-radius: 5px;
+            margin-inline: 5px;
+        }
+
+        .content-body .hashtags ul li:hover {
+            color: rgb(9, 9, 219);
+        }
+
+        .reactions {
+            background-color: teal;
+            border-radius: 10px;
+        }
+
+        .reactions ul {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-block: 10px;
+            padding-inline: 20px;
+        }
+
+        .reactions ul li {
+            color: white;
+            background-color: grey;
+            text-align: center;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .action-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-block: 15px;
+            padding-inline: 20px;
+        }
+    </style>
+
+</head>
+<body>
+    <!-- The navigation bar -->
+    <nav>
+        <div class="nav-top">
+            <ul>
+                <li><img src="{% static 'images/logos/menu.png' %}" alt="Menu"></li>
+                <li><img src="{% static 'images/logos/search.png' %}" alt="Search"></li>
+            </ul>
+        </div>
+
+        <div class="nav-middle">
+            <ul>
+                <li><img src="{% static 'images/logos/home.png' %}" alt="Home"></li>
+                <li><img src="{% static 'images/logos/explore.png' %}" alt="Explore"></li>
+            </ul>
+        </div>
+
+        <div class="nav-bottom">
+            <ul>
+                <li><img src="{% static 'images/logos/setting.png' %}" alt="Settings"></li>
+                <li><img src="{% static 'images/logos/account.png' %}" alt="Profile"></li>
+            </ul>
+        </div>
+        
+    </nav>
+
+    <!-- The page content -->
+    <div class="content">
+
+        <!-- The logo of the website -->
+        <section>
+            <div class="logo">
+                <span class="logo-text">InSight</span>
+            </div>
+        </section>
+
+        <!-- The content of the pages -->
+        <section>
+            <a href="{% url 'signup' %}">Signup</a>
+            <a href="{% url 'upload' %}">Upload</a>
+            <a href="{% url 'login' %}">login</a>
+            <a href="{% url 'logout' %}">logout</a>
+            <div class="row">
+                    
+                <div class="articles col-md-12 col-lg-12">
+                    {% for article in data %}
+                    <div class="card">
+
+                        <div class="card-body">
+            
+                            <div class="top">
+                                <img src="{{ MEDIA_URL }}{{ article.profile_name }}" alt="profile">
+                                <div class="profile-info">
+                                    <p><b>Micheal Angelo</b></p>
+                                    <i>20<sup>th</sup> February &comma; 2024</i>      
+                                </div>
+                            </div>
+                
+                            <div class="content-body">
+                                <p class="title">The rise of quantum computing: A paradigm shift in technology</p>
+                                <div class="hashtags">
+                                    <ul>
+                                        <li>@technology</li>
+                                        <li>@revolution</li>
+                                        <li>@future</li>
+                                        <li>@innovation</li>
+                                    </ul>
+                                </div>
+                            </div>
+                
+                            <div class="reactions">
+                                <ul>
+                                    <li>
+                                        <img src="" alt="">
+                                        <b>25k&plus;</b>
+                                        <p>likes</p>
+                                    </li>
+                                    <li>
+                                        <img src="" alt="">
+                                        <b>1000&plus;</b>
+                                        <p>comments</p>
+                                    </li>
+                                    <li>
+                                        <img src="" alt="">
+                                        <b>40 &plus;</b>
+                                        <p>awards</p>
+                                    </li>
+                                </ul>
+                            </div>
+                
+                            <div class="action-btn">
+                                <a href="{% url 'page' article.id %}"><button class="btn">Read Article</button></a>
+                            </div>
+            
+                        </div>
+
+                    </div>
+
+                    <!-- <div class="images"></div>
+
+                    <div class="reactions">
+                        <button class="like-button" style="border: none; background-color: transparent;" data-id="{{article.id}}"><img src="{% static 'images/logos/heart (1).png'%}" alt="Like button" height="20"></button>
+                        <span id="like-count-{{article.id}}">{{ article.likes }}</span>
+                        <button class="dislike-button" style="border: none; background-color: transparent;" data-id="{{article.id}}"><img src="{% static 'images/logos/dislike.png' %}" alt="Dislike Button" height="20"></button>
+                        <span id="dislike-count-{{article.id}}">{{ article.dislikes }}</span>
+                    </div>
+                        
+                    </div> -->
+                    {% endfor %}
+                </div>
+
+                <!-- <div class="news col-md-3 col-lg-4">
+
+                    {% for article in data %}
+                    <div class="container-mid">
+                        
+                        <div class="top">
+                            <img src="{% if article.profile_name %}{{ MEDIA_URL }}{{ article.profile_name }}{% else %}{% static 'profiles/avatar6.png' %}{% endif %}" alt="profile" style="width: 50px; height: 50px; object-fit: cover;">
+                            <div class="info">
+                                <b style="display: block;">{{ article.author.username }}</b>
+                                <i style="display: block;" class="date">{{ article.created_at }}</i>
+                            </div>
+                            
+                        </div>
+                        <div class="middle">
+                            <article>
+                                <header>
+                                    <h3 style="font-family: ChakraPetch; font-weight: bold;">{{ article.title }}</h3>
+                                </header>
+                                {% if article.content|length > 2000 %}
+                                <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">{{ article.content|slice:":2000" }}...</p>
+                                {% else %}
+                                <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">{{ article.content }}</p>
+                                {% endif %}                    
+                            </article>
+                        </div>
+                        
+                    </div>
+                    {% endfor %}
+                    
+                </div> -->
+
+            </div>
+
+        </section>
+
+        <footer class="footer">
+            <div class="col-4">
+                <h3>About Us</h3>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quibusdam explicabo ipsa tempora vero</p>
+            </div>
+    
+            <div class="col-4">
+                <h3>Review</h3>
+                <form action="" method="post">
+                    <input type="text" placeholder="Example: User Interface" class="form-input">
+                    <textarea name="" id="" cols="30" rows="10" placeholder="Write something"></textarea>
+                    <input type="submit" value="Send" class="btn">
+                </form>
+            </div>
+        </footer>
+
+    </div>
+ 
+
+
+{#    <script src="{% static 'js/main.js' %}"></script>#}
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Function to handle like button click
+            const likeButtons = document.querySelectorAll('.like-button');
+            likeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const id = button.getAttribute('data-id');
+                    
+
+                    // Optionally, send the like count to the server
+                    // updateLikeCountOnServer(id, likeCount);
+                });
+            });
+
+            // Function to handle dislike button click
+            const dislikeButtons = document.querySelectorAll('.dislike-button');
+            dislikeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const id = button.getAttribute('data-id');
+                    const dislikeCountSpan = document.getElementById(`dislike-count-${id}`);
+                    let dislikeCount = parseInt(dislikeCountSpan.textContent, 10);
+                    dislikeCount++;
+                    dislikeCountSpan.textContent = dislikeCount;
+
+                    // Optionally, send the dislike count to the server
+                    // updateDislikeCountOnServer(id, dislikeCount);
+                });
+            });
+
+            const dates = document.querySelectorAll('.date');
+            dates.forEach(function(date) {
+                const x = date.textContent;
+                const y = x.split(',');
+                const z = y[0].split(' ');
+                date.textContent = z[1] + ', ' + z[0] + ', ' + y[1]                
+            })
+        });
+    </script>
+</body>
+</html>
