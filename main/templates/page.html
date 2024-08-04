@@ -18,6 +18,64 @@
             gap: 10px;
             margin-inline: 20vw;
         }
+        nav {
+            height: fit-content;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            padding-inline: 15px;
+            padding-block: 5px;
+        }
+
+        nav .logo {
+            padding-block: 5px;
+            padding-inline: 10px;
+            background-color: black;
+            color: white;
+            font-family: "Comic Sans MS";
+            border-radius: 5px;
+        }
+
+        nav .search-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+        }
+
+        nav .search-box input {
+            height: 2em;
+            width: 100%;
+            padding-block: 4px;
+            padding-inline: 5px;
+            min-width: 0;
+            border: 1px solid grey;
+            border-radius: 5px 0 0 5px;
+        }
+
+        nav .search-box button {
+            border-radius: 0 5px 5px 0;
+            height: 2em;
+            border: none;
+            cursor: pointer;
+        }
+
+        nav .profile img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        main {
+            margin-top: 60px;
+        }
 
         .article-content {
             width: 60vw;
@@ -46,6 +104,20 @@
         .cover-image img {
             border-radius: 10px 10px 0 0;
         }
+        
+        .article-content article {
+            padding-inline: 10px;
+            padding-block: 5px;
+            text-align: start;
+            text-wrap: wrap;
+        }
+        
+        .advertisements .advert article {
+            padding-inline: 10px;
+            padding-block: 5px;
+            text-align: start;
+            text-wrap: wrap;
+        }
 
         .advert img {
             width: 100%;
@@ -62,17 +134,20 @@
 </head>
 <body>
 
-    <main>
+    <nav>
+        <div class="logo">
+            InSight
+        </div>
+        <div class="search-box">
+            <input type="search" name="search" id="search">
+            <button>Search</button>
+        </div>
+        <div class="profile">
+            <img src="/media/profiles/zalykaziqi.png" alt="Your profile">
+        </div>
+    </nav>
 
-        <nav>
-            <div class="logo">
-                InSight
-            </div>
-            <div class="search-box">
-                <input type="search" name="search" id="search">
-            </div>
-            <div class="profile"></div>
-        </nav>
+    <main>
         <section class="reactions">
 
             <div class="content">
@@ -115,10 +190,12 @@
     
             <div class="advert">
                 <img src="/media/profiles/car1.jpg" alt="Display image">
-    
-                <h4>The heading of the advert</h4>
-    
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit doloribus dolorem recusandae autem. Fugiat, sequi earum sint, commodi ratione quia aliquam nobis quibusdam illum, similique iusto libero sed perferendis unde!</p>
+                
+                <article>                        
+                    <h3>The heading of the advert</h3>
+        
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit doloribus dolorem recusandae autem. Fugiat, sequi earum sint, commodi ratione quia aliquam nobis quibusdam illum, similique iusto libero sed perferendis unde!</p>
+                </article>
             </div>
     
         </section>

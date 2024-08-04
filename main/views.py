@@ -1,8 +1,6 @@
 import http
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
-from django.db import connection
-from django.contrib.auth import authenticate, login
 
 from Insight import settings
 from main.forms import ArticleForm, LoginForm, SignupForm
@@ -15,10 +13,10 @@ def index(request):
     session_data = {}
     session_data['username'] = request.session.get('username', None)
     session_data['name'] = request.session.get('name', None)
-    # session_data['name'] = session_data.get('profile', None)
+    session_data['name'] = session_data.get('profile', None)
 
     context = {
-        'session_data': session_data.values(),
+        # 'session_data': session_data.values(),
         'data': articles,
         'MEDIA_URL': settings.MEDIA_URL
     }
@@ -62,6 +60,7 @@ def login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
+
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
 
@@ -72,12 +71,12 @@ def login(request):
             print(user)
 
             if user is not None:
-                # Login the user if authentication succeeds
-                # login(request, user)
+
                 request.session['username'] = user.username
                 request.session['name'] = user.full_name
                 request.session['profile'] = user.profile.name
                 return redirect('index')
+            
             else:
                 # Handle authentication failure
                 context = {
