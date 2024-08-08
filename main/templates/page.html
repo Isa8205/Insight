@@ -17,7 +17,6 @@
             align-items: start;
             gap: 10px;
             margin-inline: 20vw;
-            margin-top: 70px;
         }
         nav {
             height: fit-content;
@@ -76,6 +75,15 @@
 
         main {
             margin-top: 60px;
+        }
+        
+        .reactions .content ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .article-content {
@@ -153,10 +161,10 @@
 
             <div class="content">
                 <ul>
-                    <li><img src="{% static 'images/logos/reaction.svg' %}" </li>
-                    <li><img src="{% static 'images/logos/comment' %}"></li>
-                    <li><img src="{% static 'images/logos/save.svg' %}"></li>
-                    <li><img src="{% static 'images/logos/more.svg' %}"></li>
+                    <li><img src="{% static 'images/logos/reaction.svg' %}" alt="Add reaction"></li>
+                    <li><img src="{% static 'images/logos/comment.svg' %}" alt="comment"></li>
+                    <li><img src="{% static 'images/logos/save.svg' %}" alt="save"></li>
+                    <li><img src="{% static 'images/logos/more.svg' %}" alt="More"></li>
                 </ul>
             </div>
     

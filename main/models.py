@@ -1,17 +1,14 @@
 from django.db import models
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group, Permission
 
 
 # Create your models here.
-class Users(models.Model):
+class Users(AbstractUser):
     full_name = models.CharField(max_length=50, null=False)
-    username = models.CharField(max_length=20, unique=True)
-    email = models.CharField(max_length=100, null=True)
-    password = models.CharField(max_length=16, null=False)
     profile = models.FileField(upload_to='profiles/', null=True)
-
-    USERNAME_FIELD = 'username'
+    groups = models.ManyToManyField(Group, related_name='customuser_set', blank=True)
+    user_permissions = models.ManyToManyField(Permission, related_name='customuser_set', blank=True)
 
     def __str__(self):
         return self.full_name + '-' + self.username
@@ -32,9 +29,9 @@ class Articles(models.Model):
 
 
 class Comments(models.Model):
-    content = models.TextField(null=False)
     author = models.CharField(max_length=100, null=False)
-    article = models.CharField(max_length=100, null=False)
+    content = models.TextField(null=False)
+    article = models.ForeignKey(Articles, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -45,7 +42,7 @@ class Comments(models.Model):
         return self.author + '-' + self.content
 
 
-class Reviews(models.Model):
+class SiteReviews(models.Model):
     content = models.TextField(null=False)
     author = models.CharField(max_length=100, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -57,3 +54,24 @@ class Reviews(models.Model):
     def __str__(self):
         return self.author + '-' + self.content
     
+class Likes(models.Model):
+    author = models.CharField(max_length=100, null=False)
+    article = models.CharField(max_length=100, null=False)
+    time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = 'Likes'
+
+    def __str__(self):
+        return '{author} liked {article} at {time}'
+    
+class Dislikes(models.Model):
+    author = models.CharField(max_length=100, null=False)
+    article = models.CharField(max_length=100, null=False)
+    time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = 'Likes'
+
+    def __str__(self):
+        return '{author} disliked {article} at {time}'

@@ -1,24 +1,21 @@
 import http
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
+from django.db import connection
+from django.contrib.auth import authenticate, login
 
 from Insight import settings
-from main.forms import ArticleForm, LoginForm, SignupForm
+from main.forms import ArticleForm, SignupForm, UserLoginForm
 from main.models import Articles, Users
 
 
 # Create your views here.
 def index(request):
-    articles = Articles.objects.extra(select={'profile_name': 'SELECT profile FROM main_users WHERE username = author', 'user_id':'SELECT id from main_users WHERE username = author'})
-    session_data = {}
-    session_data['username'] = request.session.get('username', None)
-    session_data['name'] = request.session.get('name', None)
-    session_data['name'] = session_data.get('profile', None)
-
+    # articles = Articles.objects.extra(select={'profile_name': 'SELECT profile FROM main_users WHERE username = author', 'user_id':'SELECT id from main_users WHERE username = author'})
+    articles =[]
     context = {
-        # 'session_data': session_data.values(),
         'data': articles,
-        'MEDIA_URL': settings.MEDIA_URL
+        # 'MEDIA_URL': settings.MEDIA_URL
     }
 
     return render(request, 'index.html', context)
@@ -57,37 +54,28 @@ def signup(request):
 
 @csrf_protect
 def login(request):
+    err_msg = None
     if request.method == 'POST':
-        form = LoginForm(request.POST)
+        form = UserLoginForm(request, request.POST)      
+
         if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
 
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-
-            # Authenticate user against your custom user model
-
-            user = Users.objects.get(username=username)
-
-            print(user)
+            user = authenticate(request, username=username, password=password)
 
             if user is not None:
-
-                request.session['username'] = user.username
-                request.session['name'] = user.full_name
-                request.session['profile'] = user.profile.name
+                login(request, user)
                 return redirect('index')
-            
             else:
-                # Handle authentication failure
-                context = {
-                    'message': "Authentication Failed!",
-                    'form': form  # Pass the validated form back to the template
-                }
-                return render(request, 'login.html', context)
-    else:
-        form = LoginForm()
+                err_msg = 'Authentication failed'
 
-    return render(request, 'login.html', {'form': form})
+    else:
+        form = UserLoginForm()
+
+    
+    return render(request, 'login.html', {'form':form, 'msg':err_msg})
+
 
 
 def logout(request):
