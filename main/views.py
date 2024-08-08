@@ -11,11 +11,11 @@ from main.models import Articles, Users
 
 # Create your views here.
 def index(request):
-    # articles = Articles.objects.extra(select={'profile_name': 'SELECT profile FROM main_users WHERE username = author', 'user_id':'SELECT id from main_users WHERE username = author'})
-    articles =[]
+    articles = Articles.objects.extra(select={'profile_name': 'SELECT profile FROM main_users WHERE username = author', 'user_id':'SELECT id from main_users WHERE username = author'})
+    
     context = {
         'data': articles,
-        # 'MEDIA_URL': settings.MEDIA_URL
+        'MEDIA_URL': settings.MEDIA_URL
     }
 
     return render(request, 'index.html', context)
@@ -53,14 +53,14 @@ def signup(request):
 
 
 @csrf_protect
-def login(request):
+def user_login(request):
     err_msg = None
     if request.method == 'POST':
-        form = UserLoginForm(request, request.POST)      
+        form = UserLoginForm(request, data=request.POST)      
 
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
 
             user = authenticate(request, username=username, password=password)
 

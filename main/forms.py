@@ -19,7 +19,7 @@ class SignupForm(UserCreationForm):
             return user
         
 class UserLoginForm(AuthenticationForm):
-    username = forms.CharField(max_length=15, required=True)
+    username = forms.CharField(required=True)
     password = forms.CharField(widget=forms.PasswordInput, required=True)
 
 class ArticleForm(forms.ModelForm):

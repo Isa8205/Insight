@@ -121,6 +121,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Serving and storage of media
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -128,3 +129,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Other settings
+AUTH_USER_MODEL = 'main.Users'

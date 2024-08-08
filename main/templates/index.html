@@ -129,7 +129,11 @@
 
         <div class="nav-bottom">
             <ul>
+                {% if user.is_authenticated %}
+                <li><img src="{{MEDIA_URL}}{{user.profile}}" alt="Profile pic"></li>
+                {% else %}
                 <li><img src="{% static 'images/logos/setting.png' %}" alt="Settings"></li>
+                {% endif %}
                 <li><img src="{% static 'images/logos/account.png' %}" alt="Profile"></li>
             </ul>
         </div>

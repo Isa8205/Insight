@@ -4,12 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url(/media/wave.svg);
+            background-position: center;
+            background-size: cover;
+        }
+
+        form {
+            background-color: rgb(211, 204, 204);
+            padding: 10px;
+            border-radius: 10px;
+        }
+        
+        label, input {
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            border: none;
+            padding: 5px;
+            margin-block: 5px;
+            border-radius: 5px;
+        }
+
+        button {
+            text-align: center;
+            padding-block: 5px;
+            border-radius: 5px;
+            display: block;
+            background: linear-gradient(45deg, orange, red);
+            color: white;
+            font-size: 1.2em;
+            width: 100%;
+            border: none;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.647);
+        }
+    </style>
 </head>
 <body>
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <p>{{ message }}</p>
-        {{ form.as_p }}
+        <label for="fullname">Full name:</label>
+        <input type="text" name="full_name" id="fullname">
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username">
+        <label for="email">Email address:</label>
+        <input type="email" name="email" id="email">
+        <label for="pass1">Password:</label>
+        <input type="password" name="password1" id="pass1">
+        <label for="pass2">Confirm Password:</label>
+        <input type="password" name="password2" id="pass2">
+        <label for="profile">Profile</label>
+        <input type="file" name="profile" id="profile">
         <button>Submit</button>
         <a href="http://127.0.0.1:8000/admin/">admin</a>
     </form>
