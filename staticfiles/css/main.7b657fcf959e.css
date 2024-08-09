@@ -1,0 +1,380 @@
+/* 
+---------------------------------------------------------------------
+    Themes
+---------------------------------------------------------------------
+*/
+:root {
+    /* Light theme colors */
+    --navbar-color-light: rgb(43, 45, 66);
+    --background-color-light: rgb(141, 153, 174);
+    --text-color-light: #000000;
+    --link-color-light: #0066CC;
+    --container-color-light: rgb(237, 242, 244);
+    --footer-color-light: rgb(217, 4, 41);
+  
+    /* Dark theme colors */
+    --navbar-color-dark: #1B1A55;
+    --background-color-dark: #cecdda;
+    --text-color-dark: #FFFFFF;
+    --link-color-dark: #6ECAF2;
+    --container-color-dark: #535C91;
+    --footer-color-dark: #9290C3;
+
+    /* The default theme */ 
+    --navbar-color: var(--navbar-color-light); 
+    --background-color: var(--background-color-light);
+    --text-color: var(--text-color-light);
+    --link-color: var(--link-color-light);
+    --container-color: var(--container-color-light);
+    --footer-color: var(--footer-color-light);
+  
+  }
+
+  [data-theme='light'] {
+    --navbar-color: var(--navbar-color-light);
+    --background-color: var(--background-color-light);
+    --text-color: var(--text-color-light);
+    --link-color: var(--link-color-light);
+    --container-color: var(--container-color-light);
+    --footer-color: var(--footer-color-light);
+  }
+  
+  /* Dark theme */
+  [data-theme='dark'] {
+    --navbar-color: var(--navbar-color-dark);
+    --background-color: var(--background-color-dark);
+    --text-color: var(--text-color-dark);
+    --link-color: var(--link-color-dark);
+    --container-color: var(--container-color-dark);
+    --footer-color: var(--footer-color-dark);
+  }
+/* 
+---------------------------------------------------------------------
+    Global styles
+---------------------------------------------------------------------
+*/
+*{box-sizing: border-box;}
+
+html{
+    -ms-text-size-adjust: auto;
+    -webkit-text-size-adjust: auto;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-block: 10px;
+    font: optional;
+}
+
+p {
+    font-family:sans-serif;
+    margin-block: 5px;
+    line-height: 1.2;
+}
+
+body {
+    font-family: sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    padding: 10px;
+    margin: 0;
+}
+
+a {
+    color: var(--link-color);
+}
+
+/*
+------------------------------------------------------------------------------------------------------
+The styles for the logo 
+------------------------------------------------------------------------------------------------------
+*/
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+    padding: 0;
+    position: relative;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)), url("../images/Logo.0c576e174ed8.jpeg");
+}
+
+.logo-text {
+    position: absolute;
+    color: white;
+    font-size: 3.5em;
+    font-weight: bold;
+}
+
+/*
+------------------------------------------------------------------------------------------------------
+The styles for the content div
+------------------------------------------------------------------------------------------------------
+*/
+.content {
+    margin-left: 50px;
+    flex: 1 1 50%;
+}
+/*
+------------------------------------------------------------------------------------------------------
+The styles for the buttons 
+------------------------------------------------------------------------------------------------------
+*/
+.btn {
+    --btn-background: rgb(43, 45, 66);
+    --btn-text-color: #fff;
+    background: var(--btn-background);
+    color: var(--btn-text-color);
+    padding-block: 10px;
+    padding-inline: 20px;
+    border-radius: 5px;
+    font-size: 100%;
+    font-weight: 545;
+    margin-inline: 5px;
+    margin-block: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    border-color: rgba(0, 0, 255, 0.5);
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 0, 255, 0.5);
+}
+
+.btn:active {
+    opacity: .7;
+}
+
+.btn-blue {
+    --btn-background: #1558e9;
+    --btn-text-color: #ffffff;    
+}
+
+.btn-blue:hover {
+    --btn-background: #2494cc;
+    --btn-text-color: #fff;
+}
+
+.btn-red {
+    --btn-background: #cc1c10;
+    --btn-text-color: #ffffff;
+}
+
+.btn-red:hover {
+    --btn-background: #e72923;
+    --btn-text-color: #fff;
+}
+
+.btn-orange {
+    --btn-background: #c45e0b;
+    --btn-text-color: #ffffff;
+}
+
+.btn-orange:hover {
+    --btn-background: #e66f0e;
+    --btn-text-color: #fff;
+}
+
+.btn-green {
+    --btn-background: rgb(4, 145, 4);
+    --btn-text-color: white;
+}
+
+.btn-green:hover {
+    --btn-background: rgb(16, 212, 16);
+    --btn-text-color: white;
+}
+
+.btn-purple {
+    --btn-background: rgb(141, 5, 141);
+    --btn-text-color: white;
+}
+
+.btn-purple:hover {
+    --btn-background: rgb(173, 14, 173);
+    --btn-text-color: white; 
+}
+
+/* 
+----------------------------------------------------------------------------------------
+Styles for the part with the conent
+----------------------------------------------------------------------------------------
+ */
+
+ hr{
+    border:0;
+    border-top:2px solid #eb4f4f;
+    margin-block: 5px;
+    width: 90%;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--container-color);
+    border-radius: 5px;
+    padding: .01em 16px;
+    margin-block: 10px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, .5);
+    margin-top: 0px;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.container-mid {
+    margin-block: 10px;
+    padding: .01em 16px;
+    background: var(--container-color);
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, .5);
+    word-wrap: break-word;
+    font-style: oblique;
+}
+
+.container-mid .top {
+    display: grid;
+    grid-template-columns: 1fr 6fr;
+    padding: 10px;
+    gap: 4px;
+    position: relative;
+}
+
+.container-mid .top .info {
+    display: inline-block;
+    position: absolute;
+    right: 10px;
+    top: 20px;
+}
+
+.container-mid .top img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.details p {
+    text-align: left;
+    margin-block: 10px;
+    font-size: 110%;
+    margin-inline: 0;
+}
+
+
+.profile img {
+    border-radius: 50%;
+}
+
+.images {
+    display: flex;
+    align-items: center;
+    padding: auto;
+    gap: 5px;
+}
+
+.images img {
+    border-radius: 5px;
+}
+
+/*
+------------------------------------------------------------------------------------------------------
+The styles for the forms 
+------------------------------------------------------------------------------------------------------
+*/
+form {
+    width: 100%;
+    padding: 10px;
+    margin-block: 10px;
+}
+
+form textarea {
+    display: block;
+    height: 100px;
+    width: 100%;
+    border-radius: 5px;
+    color: black;
+    padding-inline-start: 5px;
+    margin-block: 5px;
+}
+.form-input {
+    display: block;
+    height: 30px;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #ffffff;
+    color: black;
+    margin-block: 5px;
+}
+
+form input:focus {
+    border-color: rgba(0, 0, 255, 0.5);
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 0, 255, 0.5);
+}
+
+form label {
+    font-weight: 550;
+    margin-block: 6px;
+    display: block;
+    font-family: sans-serif;
+}
+
+form a {
+    text-decoration: none;
+}
+
+.show-pass {
+    position: relative;
+}
+
+.show-pass button {
+    position: absolute;
+    top: 3px !important;
+    right: 16px !important;
+    padding: 0;
+    background-color: transparent !important;
+    border: none !important;
+    cursor: pointer;
+}
+
+/*
+------------------------------------------------------------------------------------------------------
+The styles for the footer of the main body 
+------------------------------------------------------------------------------------------------------
+*/
+footer {
+    background-color: var(--footer-color);
+    padding-top: 2px;
+    border-radius: 20px 20px 0 0;
+}
+
+footer h4 {
+    font-size: 25px;
+    margin-block: 5px;
+    
+}
+
+footer textarea {
+    display: block;
+    height: 70px;
+    width: 100%;
+    border-radius: 5px;
+    color: black;
+    padding-inline-start: 5px;
+    margin-block: 5px;
+}
+
+@media screen and (min-width: 650px) {
+    footer {
+        display: flex;
+        align-items: start;
+        gap: 0; 
+           
+    }
+    
+}

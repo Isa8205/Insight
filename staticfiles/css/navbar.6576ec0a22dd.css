@@ -1,0 +1,35 @@
+@import url("main.7b657fcf959e.css");
+
+nav {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 5px;
+    /* border-radius: 0 0 10px 0; */
+    background-color: var(--navbar-color);
+}
+
+nav div ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav div ul li {
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+nav div ul li img {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 50%;
+}
