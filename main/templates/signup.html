@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
@@ -9,18 +10,31 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary-color: #F15412;
+            --secondary-color: #353434;
+            --accent-color: #34B3F1;
+            --background-color: #EEEEEE;
+        }
+
         body {
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: url(/media/wave.svg);
             background-position: center;
             background-size: cover;
+            background-image: url(/static/images/Blob-back.svg);
+            background-repeat: no-repeat;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--accent-color);
         }
 
         form {
-            background-color: rgb(211, 204, 204);
+            background-color: var(--secondary-color);
             padding: 10px;
             border-radius: 10px;
         }
@@ -29,12 +43,40 @@
             display: block;
         }
 
+        label {
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+
+        label img {
+            height: 1.2em;
+        }
+
         input {
             width: 100%;
             border: none;
             padding: 5px;
-            margin-block: 5px;
+            margin-block-end: 10px;
+            margin-block-start: 5px;
             border-radius: 5px;
+        }
+
+        hr {
+            display: inline-block;
+            width: 20%;
+        }
+
+        .alt-action {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-block: 5px;
+        }
+
+        span {
+            color: var(--primary-color);
+            font-size: 1.2em;
         }
 
         button {
@@ -42,33 +84,166 @@
             padding-block: 5px;
             border-radius: 5px;
             display: block;
-            background: linear-gradient(45deg, orange, red);
+            background-color: var(--primary-color);
             color: white;
             font-size: 1.2em;
             width: 100%;
             border: none;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.647);
+        }
+
+        .profile-preview {
+            height: 20%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-preview img {
+            display: block;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .profile-preview #profile-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .profile-preview #profile-btn #remove {
+            background-color: red;
+        }
+
+        #profile {
+            display: none;
+        }
+
+        .name {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2em;
+        }
+
+        .terms {
+            display: flex;
+            align-items: center;
+            text-align: start;
+            margin-block: 1em;
+        }
+
+        .terms input {
+            width: auto;
+            display: inline-block;
+            margin-block: 0;
+        }
+
+        .terms span {
+            color: white;
+            font-size: 1em;
         }
     </style>
 </head>
 <body>
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        <div class="profile-preview">
+            <img src="{% static 'images/avatar1.png' %}" alt="N/A" id="preview">
+            <div id="profile-btn">
+                <button id="addbtn" type="button">Add</button>
+            </div>
+        </div>
+
         <p>{{ message }}</p>
-        <label for="fullname">Full name:</label>
-        <input type="text" name="full_name" id="fullname">
-        <label for="username">Username:</label>
+
+        <div class="name">
+            <div class="first">
+                <label for="fname">First Name:</label>
+                <input type="text" name="fname" id="fname">
+            </div>
+
+            <div class="last">                
+                <label for="lname">Last Name:</label>
+                <input type="text" name="lname" id="lname">
+            </div>
+        </div>
+
+        <label for="username"><img src="{% static 'images/icons/circled-user.svg' %}" alt="">Username:</label>
         <input type="text" name="username" id="username">
-        <label for="email">Email address:</label>
+
+        <label for="email"><img src="{% static 'images/icons/mail.svg' %}" alt="">Email address:</label>
         <input type="email" name="email" id="email">
-        <label for="pass1">Password:</label>
+
+        <label for="pass1"><img src="{% static 'images/icons/password.svg' %}" alt="">Password:</label>
         <input type="password" name="password1" id="pass1">
-        <label for="pass2">Confirm Password:</label>
+
+        <label for="pass2"><img src="{% static 'images/icons/password.svg' %}" alt="">Confirm Password:</label>
         <input type="password" name="password2" id="pass2">
-        <label for="profile">Profile</label>
-        <input type="file" name="profile" id="profile">
-        <button>Submit</button>
-        <a href="http://127.0.0.1:8000/admin/">admin</a>
+
+        <input type="file" name="profile" id="profile" accept="image/*">
+
+        <div class="terms">
+            <input type="checkbox" name="agreement" id="agree" value="yes">
+            <span>I accept the <a href="#">Terms and Conditions</a></span>
+        </div>
+
+        <button type="submit">Signup</button>
+        <div class="alt-action">
+            <hr><span>OR</span><hr>
+        </div>
+        <a href="{% url 'login' %}"><button type="button">Login</button></a>
     </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addbtn = document.getElementById('addbtn');
+            const imageInput = document.getElementById('profile');
+            const previewImg = document.getElementById('preview');
+            const profileBtnContainer = document.getElementById('profile-btn');
+
+            // Trigger file input when custom button is clicked
+            addbtn.addEventListener('click', function() {
+                imageInput.click();
+            });
+
+            // Display selected image and add Remove button
+            imageInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        previewImg.src = e.target.result;
+                    };
+
+                    reader.readAsDataURL(file);
+
+                    // Update button text and add Remove button
+                    addbtn.textContent = "Change";
+                    if (!document.getElementById('remove')) {
+                        const removeBtn = document.createElement('button');
+                        removeBtn.setAttribute('id', 'remove');
+                        removeBtn.textContent = "Remove";
+                        removeBtn.setAttribute('type', 'button');
+                        profileBtnContainer.appendChild(removeBtn);
+
+                        // Remove image and reset input on Remove button click
+                        removeBtn.addEventListener('click', function() {
+                            previewImg.src = "{% static 'images/avatar1.png' %}";
+                            imageInput.value = '';
+                            addbtn.textContent = "Add";
+                            profileBtnContainer.removeChild(removeBtn);
+                        });
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>

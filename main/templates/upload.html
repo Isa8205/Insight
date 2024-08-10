@@ -33,7 +33,6 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -91,8 +90,8 @@
         <form action="" method="post">
             <p>{{ message }}</p>
             {% csrf_token %}
-            <label for="author">Author:</label>
-            <input type="text" class="form-input" name="author" placeholder="Enter you name" id="author">
+            <!-- <label for="author">Author:</label>
+            <input type="text" class="form-input" name="author" placeholder="Enter you name" id="author"> -->
             <label for="title">Title</label>
             <input type="text" name="title" id="title" class="form-input" placeholder="Enter the title to your article">
             <label for="content">Content</label>    

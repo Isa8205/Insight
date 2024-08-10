@@ -88,6 +88,7 @@ def upload(request):
     if request.method == 'POST':
         form = ArticleForm(request.POST)
         if form.is_valid():
+            form.author = request.session.get('full_name')
             form.save()
             return render(request, 'upload.html', {'message': 'Upload successful'})
         else:
