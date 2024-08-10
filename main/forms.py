@@ -8,7 +8,7 @@ from main.models import Articles, Users
 class SignupForm(UserCreationForm):
     class Meta:
         model = Users
-        fields = ['full_name', 'username','email', 'password1', 'password2', 'profile']
+        fields = ['firstname', 'lastname', 'username','email', 'password1', 'password2', 'profile']
 
         def save(self, commit=True):
             user = super().save(commit=False)

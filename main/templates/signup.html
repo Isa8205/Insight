@@ -176,6 +176,9 @@
 
         <label for="username"><img src="{% static 'images/icons/circled-user.svg' %}" alt="">Username:</label>
         <input type="text" name="username" id="username">
+        <div style="display: flex; align-items: center; gap: 2px;">
+            <img src="#" alt="" id="display-icon"><span id="display" style="display: none;"></span>
+        </div>
 
         <label for="email"><img src="{% static 'images/icons/mail.svg' %}" alt="">Email address:</label>
         <input type="email" name="email" id="email">
@@ -244,6 +247,56 @@
                 }
             });
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const usernameInput = document.getElementById('username');
+            const display = document.getElementById('display');
+            const displayIcon = document.getElementById('display-icon');
+            let debounceTimeout;
+        
+            // Debounce function
+            function debounce(func, delay) {
+                return function(...args) {
+                    clearTimeout(debounceTimeout);
+                    debounceTimeout = setTimeout(() => func.apply(this, args), delay);
+                };
+            }
+        
+            // Function to handle the fetch request
+            function checkUsername() {
+                const usernameVal = usernameInput.value.trim();
+        
+                if (usernameVal) {
+                    fetch('{% url "check_username" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ username: usernameVal })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        usernameInput.style.marginBlockEnd = '2px'
+                        display.style.display = 'inline-block';
+                        display.style.fontSize = '.9em';
+                        display.textContent = data.message;
+                        display.style.color = data.status === 'Available' ? '#69c70a' : 'red';
+                        displayIcon.src = data.status === 'Available' 
+                            ? "{% static 'images/icons/circle-checkg.svg' %}" 
+                            : "{% static 'images/icons/circle-alert.svg' %}";
+                        displayIcon.style.height = '1.1em';
+                    })
+                    .catch(err => console.error('Error:', err));
+                } else {
+                    display.style.display = 'none';
+                    displayIcon.src = '#'
+                }
+            }
+        
+            // Attach the debounce function to the input event
+            usernameInput.addEventListener('input', debounce(checkUsername, 500));
+        });
+        
     </script>
 </body>
 </html>

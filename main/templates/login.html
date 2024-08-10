@@ -14,72 +14,54 @@
 
         :root {
             --primary-color: #F15412;
-            --secondary-color: #000000;
+            --secondary-color: #353434;
             --accent-color: #34B3F1;
             --background-color: #EEEEEE;
         }
 
         body {
-            margin: 0;
-            padding: 0;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            font-family: Arial, Helvetica, sans-serif;
-            background-image: url(../static/images/Blob-back.svg);
-            background-repeat: no-repeat;
+            background-position: center;
             background-size: cover;
+            background-image: url(/static/images/Blob-back.svg);
+            background-repeat: no-repeat;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--accent-color);
         }
 
         form {
-            width: 30vw;
+            background-color: var(--secondary-color);
+            padding: 10px;
             border-radius: 10px;
-            background-color: rgb(11, 11, 11);
-            padding-block: 20px;
-            padding-inline: 15px;
         }
-
-        h3 {
-            color: #F15412;
-            text-align: center;
-            font-size: 1.5rem;
-        }
-
-        input, label {
+        
+        label, input {
             display: block;
-            margin-block: 5px;
         }
 
         label {
-            font-size: 1.2em;
-            color: #F15412;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+
+        label img {
+            height: 1.2em;
         }
 
         input {
             width: 100%;
-            height: 2.5em;
-            border-radius: 5px;
-        }
-
-        button {
-            width: 100%;
-            height: 1.5em;
-            font-size: 1.2rem;
-            padding-block: 5px;
-            border-radius: 5px;
-            background-color: #F15412;
-            color: white;
-            font-weight: bold;
             border: none;
-            margin-block: 10px;
-            cursor: pointer;
-        }
-
-        .alt-action {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            padding: 5px;
+            margin-block-end: 10px;
+            margin-block-start: 5px;
+            border-radius: 5px;
         }
 
         hr {
@@ -87,9 +69,28 @@
             width: 20%;
         }
 
+        .alt-action {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-block: 5px;
+        }
+
         span {
-            color: #F15412;
+            color: var(--primary-color);
+            font-size: 1.2em;
+        }
+
+        button {
             text-align: center;
+            padding-block: 5px;
+            border-radius: 5px;
+            display: block;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 1.2em;
+            width: 100%;
+            border: none;
         }
 
         .show-pass {

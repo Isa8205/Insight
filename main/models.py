@@ -5,7 +5,8 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 
 # Create your models here.
 class Users(AbstractUser):
-    full_name = models.CharField(max_length=50, null=False)
+    firstname = models.CharField(max_length=20, null=False, default='John')
+    lastname = models.CharField(max_length=20, null=False, default='Doe')
     profile = models.FileField(upload_to='profiles/', null=True)
     groups = models.ManyToManyField(Group, related_name='customuser_set', blank=True)
     user_permissions = models.ManyToManyField(Permission, related_name='customuser_set', blank=True)

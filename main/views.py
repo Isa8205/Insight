@@ -1,4 +1,6 @@
 import http
+import json
+from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.db import connection
@@ -27,7 +29,6 @@ def signup(request):
         form = SignupForm(request.POST, request.FILES)
         if form.is_valid():
             username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
             profile_image = request.FILES['profile']
             profile_name = profile_image.name
             print(f'Profile image name: {profile_name}')
@@ -50,6 +51,21 @@ def signup(request):
         form = SignupForm()
 
     return render(request, 'signup.html', {'form': form})
+
+@csrf_exempt
+def check_username(request):
+    body_unicode = request.body.decode('utf-8')
+    data = json.loads(body_unicode)
+    username = data.get('username')
+
+    user_exists = Users.objects.filter(username=username).exists()
+
+    if user_exists:
+        response = {"status": "Unavailable","message": "Username already in use"}
+    else:
+        response = {"status": "Available","message": "Username available"}
+
+    return JsonResponse(response)
 
 
 @csrf_protect
