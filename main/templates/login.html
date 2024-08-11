@@ -95,25 +95,22 @@
 
         .show-pass {
             display: flex;
-            gap: 0;
             align-items: center;
-            justify-content: start;
+            text-align: start;
+            margin-block: .5em;
         }
 
         .show-pass input {
-            border-radius: 5px 0 0 5px;
-            margin-inline-end: -2px;
+            width: auto;
+            display: inline-block;
+            margin-block: 0;
         }
 
-        #show {
-            width: 10%; 
-            background-color: white;
-            border: none;
-            margin-block: 0;
-            border-radius: 0 5px 5px 0;
-            padding: auto;
-            margin-inline-start: 0;
+        .show-pass span {
+            color: white;
+            font-size: 1em;
         }
+
     </style>
 </head>
 <body>
@@ -125,9 +122,10 @@
         <input type="text" name="username" id="username" placeholder="Enter yoyr username">
 
         <label for="password">Password</label>
+        <input type="password" name="password" id="password" placeholder="Enter your password">
         <div class="show-pass">
-            <input type="password" name="password" id="password" placeholder="Enter your password">
-            <button type="button" id="show"><img src="{% static 'images/icons/eye.svg' %}" alt="Show" id="eye"></button>
+            <input type="checkbox" name="" id="show-pass">
+            <span>Show password</span>
         </div>
 
         <button type="submit">Login</button>
@@ -142,14 +140,19 @@
         const inputval = document.getElementById('password')
         let eyeimg = document.getElementById('eye')
 
-        showbtn.addEventListener('click', () => {
-            if (inputval.type === 'password') {
-                eyeimg.src = '../static/images/icons/eye-off.svg'
-                inputval.type = 'text'
-            } else {
-                eyeimg.src = '../static/images/icons/eye.svg'
-                inputval.type = 'password'
-            }
+        document.addEventListener('DOMContentLoaded', function() {
+            const passcheck = document.getElementById('show-pass')
+            const pass1 = document.getElementById('password')
+
+            passcheck.addEventListener('change', function() {
+                if (passcheck.checked) {
+                    pass1.type = 'text'
+                    pass2.type = 'text'
+                } else {
+                    pass1.type = 'password'
+                    pass2.type = 'password'
+                }
+            })
         })
     </script>
 </body>

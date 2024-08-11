@@ -8,6 +8,7 @@
     <style>
         * {
             box-sizing: border-box;
+            transition: all .25s ease-in-out;
         }
 
         :root {
@@ -53,7 +54,7 @@
             height: 1.2em;
         }
 
-        input {
+        input, select {
             width: 100%;
             border: none;
             padding: 5px;
@@ -135,7 +136,7 @@
             display: flex;
             align-items: center;
             text-align: start;
-            margin-block: 1em;
+            margin-block: .5em;
         }
 
         .terms input {
@@ -147,6 +148,22 @@
         .terms span {
             color: white;
             font-size: 1em;
+        }
+
+        .phone-group {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+        }
+
+        .phone-group select {
+            width: 20%;
+            border-radius: 5px 0 0 5px;
+        }
+
+        .phone-group input {
+            border-radius: 0 5px 5px 0;
+            padding: 5px;
         }
     </style>
 </head>
@@ -176,15 +193,28 @@
 
         <label for="username"><img src="{% static 'images/icons/circled-user.svg' %}" alt="">Username:</label>
         <input type="text" name="username" id="username">
-        <div style="display: flex; align-items: center; gap: 2px;">
+        <div style="display: flex; align-items: center; gap: 2px;" id="display-box">
             <img src="#" alt="" id="display-icon"><span id="display" style="display: none;"></span>
         </div>
 
         <label for="email"><img src="{% static 'images/icons/mail.svg' %}" alt="">Email address:</label>
         <input type="email" name="email" id="email">
 
+        <label for="phone"><img src="{% static 'images/icons/phone.svg' %}" alt="">Phone Number</label>
+        <div class="phone-group">
+            <select name="country-code" id="code">
+                <option value="Kenya">&plus;254</option>
+                <option value="Tanzania">&plus;256</option>
+            </select>
+            <input type="number" name="number" id="phone">
+        </div>
+
         <label for="pass1"><img src="{% static 'images/icons/password.svg' %}" alt="">Password:</label>
         <input type="password" name="password1" id="pass1">
+        <div class="terms">
+            <input type="checkbox" name="" id="show-pass">
+            <span>Show password</span>
+        </div>
 
         <label for="pass2"><img src="{% static 'images/icons/password.svg' %}" alt="">Confirm Password:</label>
         <input type="password" name="password2" id="pass2">
@@ -276,7 +306,7 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        usernameInput.style.marginBlockEnd = '2px'
+                        usernameInput.style.marginBlockEnd = '2px';
                         display.style.display = 'inline-block';
                         display.style.fontSize = '.9em';
                         display.textContent = data.message;
@@ -288,8 +318,11 @@
                     })
                     .catch(err => console.error('Error:', err));
                 } else {
+                    // Hide the display elements if the input is empty
+                    usernameInput.style.marginBlockEnd = '10px';
                     display.style.display = 'none';
-                    displayIcon.src = '#'
+                    displayIcon.src = '#';
+                    displayIcon.style.height = '0'; // Hide the icon
                 }
             }
         
@@ -297,6 +330,21 @@
             usernameInput.addEventListener('input', debounce(checkUsername, 500));
         });
         
+        document.addEventListener('DOMContentLoaded', function() {
+            const passcheck = document.getElementById('show-pass')
+            const pass1 = document.getElementById('pass1')
+            const pass2 = document.getElementById('pass2')
+
+            passcheck.addEventListener('change', function() {
+                if (passcheck.checked) {
+                    pass1.type = 'text'
+                    pass2.type = 'text'
+                } else {
+                    pass1.type = 'password'
+                    pass2.type = 'password'
+                }
+            })
+        })
     </script>
 </body>
 </html>

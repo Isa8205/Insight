@@ -8,12 +8,14 @@ from main.models import Articles, Users
 class SignupForm(UserCreationForm):
     class Meta:
         model = Users
-        fields = ['firstname', 'lastname', 'username','email', 'password1', 'password2', 'profile']
+        fields = ['firstname', 'lastname', 'username','email', 'phone_number', 'Date_Of_Birth', 'password1', 'password2', 'profile']
 
         def save(self, commit=True):
             user = super().save(commit=False)
             user.full_name = self.cleaned_data["full_name"]
             user.profile = self.cleaned_data["profile"]
+            user.phone_number = self.cleaned_data["phone_number"]
+            user.Date_Of_Birth = self.cleaned_data["Date_Of_Birth"]
             if commit:
                 user.save()
             return user

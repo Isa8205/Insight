@@ -30,8 +30,6 @@ def signup(request):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             profile_image = request.FILES['profile']
-            profile_name = profile_image.name
-            print(f'Profile image name: {profile_name}')
 
             new_image_name = f'profiles/{username}.png'
             with open(f'media/{new_image_name}', 'wb+') as destination:
