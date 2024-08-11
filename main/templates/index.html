@@ -214,50 +214,8 @@
                         </div>
 
                     </div>
-
-                    <!-- <div class="images"></div>
-
-                    <div class="reactions">
-                        <button class="like-button" style="border: none; background-color: transparent;" data-id="{{article.id}}"><img src="{% static 'images/logos/heart (1).png'%}" alt="Like button" height="20"></button>
-                        <span id="like-count-{{article.id}}">{{ article.likes }}</span>
-                        <button class="dislike-button" style="border: none; background-color: transparent;" data-id="{{article.id}}"><img src="{% static 'images/logos/dislike.png' %}" alt="Dislike Button" height="20"></button>
-                        <span id="dislike-count-{{article.id}}">{{ article.dislikes }}</span>
-                    </div>
-                        
-                    </div> -->
                     {% endfor %}
                 </div>
-
-                <!-- <div class="news col-md-3 col-lg-4">
-
-                    {% for article in data %}
-                    <div class="container-mid">
-                        
-                        <div class="top">
-                            <img src="{% if article.profile_name %}{{ MEDIA_URL }}{{ article.profile_name }}{% else %}{% static 'profiles/avatar6.png' %}{% endif %}" alt="profile" style="width: 50px; height: 50px; object-fit: cover;">
-                            <div class="info">
-                                <b style="display: block;">{{ article.author.username }}</b>
-                                <i style="display: block;" class="date">{{ article.created_at }}</i>
-                            </div>
-                            
-                        </div>
-                        <div class="middle">
-                            <article>
-                                <header>
-                                    <h3 style="font-family: ChakraPetch; font-weight: bold;">{{ article.title }}</h3>
-                                </header>
-                                {% if article.content|length > 2000 %}
-                                <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">{{ article.content|slice:":2000" }}...</p>
-                                {% else %}
-                                <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">{{ article.content }}</p>
-                                {% endif %}                    
-                            </article>
-                        </div>
-                        
-                    </div>
-                    {% endfor %}
-                    
-                </div> -->
 
             </div>
 

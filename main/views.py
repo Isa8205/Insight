@@ -29,22 +29,34 @@ def signup(request):
         form = SignupForm(request.POST, request.FILES)
         if form.is_valid():
             username = form.cleaned_data.get('username')
-            profile_image = request.FILES['profile']
 
-            new_image_name = f'profiles/{username}.png'
-            with open(f'media/{new_image_name}', 'wb+') as destination:
-                for chunk in profile_image.chunks():
-                    destination.write(chunk)
+            if request.FILES:
+                profile_image = request.FILES['profile']
+
+                new_image_name = f'profiles/{username}.png'
+                with open(f'media/{new_image_name}', 'wb+') as destination:
+                    for chunk in profile_image.chunks():
+                        destination.write(chunk)
+                        
+            else:
+                new_image_name = "profiles/avatar1.png"
 
             user = form.save(commit=False)
             user.profile = new_image_name
             user.save()
 
-            context = {
-                'message': 'Signup successful',
-                'form': SignupForm()
-            }
-            return render(request, 'signup.html', context)
+            # context = {
+            #     'message': 'Signup successful',
+            #     'form': SignupForm()
+            # }
+            return redirect('login')
+        
+        else:
+            print(form.errors)
+            message = "Signup failed"
+
+            return render(request, 'signup.html', {'message': message, 'error': form.errors})
+
     else:
         form = SignupForm()
 

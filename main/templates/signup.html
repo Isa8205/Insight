@@ -25,6 +25,7 @@
             align-items: center;
             background-position: center;
             background-size: cover;
+            background-attachment: fixed;
             background-image: url(/static/images/Blob-back.svg);
             background-repeat: no-repeat;
         }
@@ -61,6 +62,12 @@
             margin-block-end: 10px;
             margin-block-start: 5px;
             border-radius: 5px;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
 
         hr {
@@ -125,7 +132,7 @@
             display: none;
         }
 
-        .name {
+        .group {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -178,51 +185,69 @@
         </div>
 
         <p>{{ message }}</p>
+        <div class="errors">
+            {{ error }}
+        </div>
 
-        <div class="name">
-            <div class="first">
-                <label for="fname">First Name:</label>
-                <input type="text" name="fname" id="fname">
+        <div class="group">
+            <div class="left">
+                <label for="firstname">First Name:</label>
+                <input type="text" name="firstname" id="fname" required>
             </div>
 
-            <div class="last">                
-                <label for="lname">Last Name:</label>
-                <input type="text" name="lname" id="lname">
+            <div class="right">                
+                <label for="lastname">Last Name:</label>
+                <input type="text" name="lastname" id="lname" required>
             </div>
         </div>
 
         <label for="username"><img src="{% static 'images/icons/circled-user.svg' %}" alt="">Username:</label>
-        <input type="text" name="username" id="username">
+        <input type="text" name="username" id="username" required>
         <div style="display: flex; align-items: center; gap: 2px;" id="display-box">
             <img src="#" alt="" id="display-icon"><span id="display" style="display: none;"></span>
         </div>
 
         <label for="email"><img src="{% static 'images/icons/mail.svg' %}" alt="">Email address:</label>
-        <input type="email" name="email" id="email">
+        <input type="email" name="email" id="email" required>
 
         <label for="phone"><img src="{% static 'images/icons/phone.svg' %}" alt="">Phone Number</label>
         <div class="phone-group">
             <select name="country-code" id="code">
-                <option value="Kenya">&plus;254</option>
-                <option value="Tanzania">&plus;256</option>
+                <option value="+254">&plus;254</option>
+                <option value="+256">&plus;256</option>
             </select>
-            <input type="number" name="number" id="phone">
+            <input type="number" name="phone_number" id="phone" required>
+        </div>
+
+        <div class="group">
+            <div class="left">
+                <label for="DOB"><img src="{% static 'images/icons/calendar.svg' %}" alt="">Date of Birth</label>
+                <input type="date" name="date_of_birth" id="DOB" required>
+            </div>
+            <div class="right">
+                <label for="gender">Gender:</label>
+                <select name="gender" id="gender">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="N/A">Prefer not to say</option>
+                </select>
+            </div>
         </div>
 
         <label for="pass1"><img src="{% static 'images/icons/password.svg' %}" alt="">Password:</label>
-        <input type="password" name="password1" id="pass1">
+        <input type="password" name="password1" id="pass1" required>
         <div class="terms">
             <input type="checkbox" name="" id="show-pass">
             <span>Show password</span>
         </div>
 
         <label for="pass2"><img src="{% static 'images/icons/password.svg' %}" alt="">Confirm Password:</label>
-        <input type="password" name="password2" id="pass2">
+        <input type="password" name="password2" id="pass2" required>
 
         <input type="file" name="profile" id="profile" accept="image/*">
 
         <div class="terms">
-            <input type="checkbox" name="agreement" id="agree" value="yes">
+            <input type="checkbox" name="agreement" id="agree" value="yes" required>
             <span>I accept the <a href="#">Terms and Conditions</a></span>
         </div>
 
