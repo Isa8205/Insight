@@ -172,6 +172,14 @@
             border-radius: 0 5px 5px 0;
             padding: 5px;
         }
+
+        .error-msg {
+            background-color: red;
+            color: maroon;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -183,11 +191,14 @@
                 <button id="addbtn" type="button">Add</button>
             </div>
         </div>
-
-        <p>{{ message }}</p>
+        {% if message %}
+        <div class="error-msg">
+            <img src="{% static 'images/icons/circle-alert.svg' %}" alt=""><span>{{ message }}</span>
+        </div>
         <div class="errors">
             {{ error }}
         </div>
+        {% endif %}
 
         <div class="group">
             <div class="left">
