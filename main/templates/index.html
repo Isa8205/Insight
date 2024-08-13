@@ -6,10 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>InSight</title>
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
-    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" href="{% static 'css/grid.css'%}">
 
     <style>
+
+        body {
+            overflow-x: hidden;
+        }
 
         .articles {
             display: grid;
@@ -89,9 +92,30 @@
             padding-block: 15px;
             padding-inline: 20px;
         }
+    </style>
 
-        .logo {
-            background: #F15412;
+    <style>
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #F15412;
+        }
+        nav .left {
+            font-size: 2em;
+            color: white;
+        }
+
+        nav .right  ul{
+            display: flex;
+            list-style: none;
+            gap: 1em;
+            justify-content: start;
+        }
+
+        nav .right ul li {
+            font-size: 2em;
+            font-weight: bold;
         }
     </style>
 
@@ -99,28 +123,15 @@
 <body>
     <!-- The navigation bar -->
     <nav>
-        <div class="nav-top">
-            <ul>
-                <li><img src="{% static 'images/logos/menu.png' %}" alt="Menu"></li>
-                <li><img src="{% static 'images/logos/search.png' %}" alt="Search"></li>
-            </ul>
-        </div>
+        <div class="left">InSight</div>
 
-        <div class="nav-middle">
+        <div class="right">
             <ul>
-                <li><img src="{% static 'images/logos/home.png' %}" alt="Home"></li>
-                <li><img src="{% static 'images/logos/explore.png' %}" alt="Explore"></li>
-            </ul>
-        </div>
-
-        <div class="nav-bottom">
-            <ul>
-                <li><img src="{% static 'images/logos/setting.png' %}" alt="Profile"></li>
-                {% if user.is_authenticated %}
-                <li><img src="{{MEDIA_URL}}{{user.profile}}" alt="Profile pic"></li>
-                {% else %}
-                <li><img src="{% static 'images/logos/account.png' %}" alt="Settings"></li>
-                {% endif %}
+                <li>Cagtegories</li>
+                <li>Featured</li>
+                <li>Other1</li>
+                <li>Other2</li>
+                <li>Other3</li>
             </ul>
         </div>
         
@@ -131,10 +142,9 @@
 
         <!-- The logo of the website -->
         <section>
-            <div class="logo">
-                <span class="logo-text">InSight</span>
-            </div>
-            <img src="{% static 'images/waves.svg' %}" alt="" width="100%">
+            <!-- <div class="logo">
+                <img src="{% static 'images/logo.png' %}" alt="" width="100%">
+            </div> -->
         </section>
         {% if user.is_authenticated %}
         <a href="{% url 'logout' %}">Logout</a>

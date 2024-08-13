@@ -5,7 +5,7 @@
 */
 :root {
     /* Light theme colors */
-    --navbar-color-light: rgb(43, 45, 66);
+    --navbar-color-light: rgb(255, 255, 255);
     --background-color-light: rgb(141, 153, 174);
     --text-color-light: #000000;
     --link-color-light: #0066CC;
@@ -76,7 +76,7 @@ body {
     font-family: sans-serif;
     background-color: var(--background-color);
     color: var(--text-color);
-    padding: 10px;
+    padding: 0;
     margin: 0;
 }
 
@@ -114,10 +114,7 @@ The styles for the logo
 The styles for the content div
 ------------------------------------------------------------------------------------------------------
 */
-.content {
-    margin-left: 50px;
-    flex: 1 1 50%;
-}
+
 /*
 ------------------------------------------------------------------------------------------------------
 The styles for the buttons 
