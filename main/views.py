@@ -112,18 +112,24 @@ def logout(request):
 @csrf_protect
 def upload(request):
     if request.method == 'POST':
-        form = ArticleForm(request.POST)
+        form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
-            form.author = request.session.get('full_name')
-            form.save()
+            print('...the form is being processed')
+            article = form.save(commit=False)
+            author_name = request.user.username
+            if not author_name:
+                return render(request, 'upload.html', {'form': form, 'message': 'Author information is missing in the session.'})
+            article.author = author_name
+            article.save()
             return render(request, 'upload.html', {'message': 'Upload successful'})
         else:
-            form = ArticleForm()
+            message = 'Upload failed'
+            error = form.errors
+            print(error)
 
-    else:
-        form = ArticleForm()
+            return render(request, 'upload.html', {'form': form, 'message': message, 'error': error})
 
-    return render(request, 'upload.html', {'form': form})
+    return render(request, 'upload.html', {'form': ArticleForm()})
 
 
 def single_user(request, user_id):

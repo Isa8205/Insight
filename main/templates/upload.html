@@ -87,17 +87,23 @@
 <body>
 
     <div class="container">
-        <form action="" method="post">
+        <form action="" method="post" enctype="multipart/form-data">
             <p>{{ message }}</p>
+            <div>
+                {{ error }}
+            </div>
             {% csrf_token %}
-            <!-- <label for="author">Author:</label>
-            <input type="text" class="form-input" name="author" placeholder="Enter you name" id="author"> -->
-            <label for="title">Title</label>
+            {{ form.as_p }}
+
+            <!-- <label for="title">Title</label>
             <input type="text" name="title" id="title" class="form-input" placeholder="Enter the title to your article">
+
             <label for="content">Content</label>    
             <textarea name="content" id="content" placeholder="Enter the content of your article"></textarea>
+
             <label for="image">Image</label>
-            <input type="file" name="profile" id="image" class="form-input">
+            <input type="file" name="profile" id="image" class="form-input"> -->
+
             <button class="btn">Submit</button>
             <a href="{% url 'index' %}"><button type="button" class="btn">Home</button></a>
         </form>

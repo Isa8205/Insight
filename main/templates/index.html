@@ -13,22 +13,14 @@
 
         .articles {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            row-gap: 5px;
-            column-gap: 10px;
-            width: 100%;
-        }
-        
-        @media screen and (max-width: 425px) {
-            .articles {
-                grid-template-columns: 1fr 1fr;
-            }
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            row-gap: 10px;
+            column-gap: 15px;
         }
 
         .card {
             color: white;
             border-radius: 10px;
-            /* width: fit-content; */
         }
 
         .card-body {
@@ -52,8 +44,7 @@
         }
 
         .content-body .hashtags {
-            /* background-color: teal; */
-            color: rgb(14, 14, 243);
+            color: #34B3F1;
         }
 
         .content-body .hashtags ul {
@@ -72,32 +63,23 @@
             padding-inline: 2px;
             border-radius: 5px;
             margin-inline: 5px;
+            cursor: pointer;
         }
 
         .content-body .hashtags ul li:hover {
-            color: rgb(9, 9, 219);
+            color: #2b95ca;
         }
 
-        .reactions {
-            background-color: teal;
+        .cover-img {
+            width: 100%;
+            height: 10em;
+        }
+
+        .cover-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             border-radius: 10px;
-        }
-
-        .reactions ul {
-            list-style: none;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-block: 10px;
-            padding-inline: 20px;
-        }
-
-        .reactions ul li {
-            color: white;
-            background-color: grey;
-            text-align: center;
-            padding: 5px;
-            border-radius: 5px;
         }
 
         .action-btn {
@@ -106,6 +88,10 @@
             align-items: center;
             padding-block: 15px;
             padding-inline: 20px;
+        }
+
+        .logo {
+            background: #F15412;
         }
     </style>
 
@@ -148,10 +134,12 @@
             <div class="logo">
                 <span class="logo-text">InSight</span>
             </div>
+            <img src="{% static 'images/waves.svg' %}" alt="" width="100%">
         </section>
         {% if user.is_authenticated %}
         <a href="{% url 'logout' %}">Logout</a>
         <a href="{% url 'upload' %}">upload</a>
+        <p>{{ user.username }}</p>
         {% else %}
         <a href="{% url 'login' %}">Login</a>
         {% endif %}
@@ -159,63 +147,45 @@
 
         <!-- The content of the pages -->
         <section>
-            <div class="row">
                     
-                <div class="articles col-md-12 col-lg-12">
-                    {% for article in data %}
-                    <div class="card">
+            <div class="articles">
+                {% for article in data %}
+                <div class="card">
 
-                        <div class="card-body">
+                    <div class="card-body">
+        
+                        <div class="top">
+                            <img src="{{ MEDIA_URL }}{{ article.profile_name }}" alt="{{ article.author }}">
+                            <div class="profile-info">
+                                <p><b>{{ article.author }}</b></p>
+                                <i>{{ article.created_at }}</i>      
+                            </div>
+                        </div>
             
-                            <div class="top">
-                                <img src="{{ MEDIA_URL }}{{ article.profile_name }}" alt="profile">
-                                <div class="profile-info">
-                                    <p><b>Micheal Angelo</b></p>
-                                    <i>20<sup>th</sup> February &comma; 2024</i>      
-                                </div>
-                            </div>
-                
-                            <div class="content-body">
-                                <p class="title">The rise of quantum computing: A paradigm shift in technology</p>
-                                <div class="hashtags">
-                                    <ul>
-                                        <li>@technology</li>
-                                        <li>@revolution</li>
-                                        <li>@future</li>
-                                        <li>@innovation</li>
-                                    </ul>
-                                </div>
-                            </div>
-                
-                            <div class="reactions">
+                        <div class="content-body">
+                            <p class="title">{{ article.title }}</p>
+                            <div class="hashtags">
                                 <ul>
-                                    <li>
-                                        <img src="" alt="">
-                                        <b>25k&plus;</b>
-                                        <p>likes</p>
-                                    </li>
-                                    <li>
-                                        <img src="" alt="">
-                                        <b>1000&plus;</b>
-                                        <p>comments</p>
-                                    </li>
-                                    <li>
-                                        <img src="" alt="">
-                                        <b>40 &plus;</b>
-                                        <p>awards</p>
-                                    </li>
+                                    <li>@technology</li>
+                                    <li>@revolution</li>
+                                    <li>@future</li>
+                                    <li>@innovation</li>
                                 </ul>
                             </div>
-                
-                            <div class="action-btn">
-                                <a href="{% url 'page' article.id %}"><button class="btn">Read Article</button></a>
-                            </div>
-            
                         </div>
-
+            
+                        <div class="cover-img">
+                            <img src="{{ MEDIA_URL }}{{ article.cover_image }}" alt="cover image">
+                        </div>
+            
+                        <div class="action-btn">
+                            <a href="{% url 'page'  article.id %}"><button class="btn">Read Article</button></a>
+                        </div>
+        
                     </div>
-                    {% endfor %}
+
                 </div>
+                {% endfor %}
 
             </div>
 

@@ -33,6 +33,10 @@ class Articles(models.Model):
     author = models.CharField(max_length=100, null=False)
     title = models.CharField(max_length=100, null=False)
     content = models.TextField(null=False)
+    published = models.BooleanField(default=False)
+    views = models.IntegerField(default=0)
+    cover_image = models.FileField(upload_to='Articles/cover_images/', null=True)
+    content_images  = models.FileField(upload_to='Articles/content_images/', null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

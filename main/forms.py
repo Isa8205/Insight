@@ -27,6 +27,6 @@ class UserLoginForm(AuthenticationForm):
 class ArticleForm(forms.ModelForm):
     class Meta:
         model = Articles
-        fields = ['author', 'title', 'content']
+        fields = ['title', 'content', 'cover_image']
 
 
