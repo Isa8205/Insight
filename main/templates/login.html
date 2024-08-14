@@ -79,7 +79,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-block: 2.2em;
         }
 
         span {
@@ -122,6 +121,13 @@
 <body>
     <form action="" method="post">
         {% csrf_token %}
+
+        {% if message %}
+            <div class="errors">
+                {{ message }}
+                {{ error }}
+            </div>
+        {% endif %}
 
         <h3>Login</h3>
         <label for="username">Username</label>

@@ -45,10 +45,6 @@ def signup(request):
             user.profile = new_image_name
             user.save()
 
-            # context = {
-            #     'message': 'Signup successful',
-            #     'form': SignupForm()
-            # }
             return redirect('login')
         
         else:
@@ -95,6 +91,9 @@ def user_login(request):
                 return redirect('index')
             else:
                 err_msg = 'Authentication failed'
+        else:
+            error = form.errors
+            return render(request, 'login.html', {'message': err_msg, 'error': error})
 
     else:
         form = UserLoginForm()
@@ -108,29 +107,51 @@ def logout(request):
     request.session.flush()
     return redirect('index')
 
-
 @csrf_protect
 def upload(request):
     if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES)
+
         if form.is_valid():
-            print('...the form is being processed')
+            title = form.cleaned_data.get('title')
+            
+            cover_img = request.FILES['cover_image']
+
+            new_cover_img_name = f'Articles/cover_images/{title}.png'
+            with open(f'media/{new_cover_img_name}', 'wb+') as destination:
+                for chunk in cover_img.chunks():
+                    destination.write(chunk)
+                    
             article = form.save(commit=False)
             author_name = request.user.username
-            if not author_name:
-                return render(request, 'upload.html', {'form': form, 'message': 'Author information is missing in the session.'})
             article.author = author_name
+            article.cover_image = new_cover_img_name
             article.save()
-            return render(request, 'upload.html', {'message': 'Upload successful'})
+
+            return render(request, 'upload.html', {'message': 'Upload successful', 'form': ArticleForm()})
         else:
             message = 'Upload failed'
             error = form.errors
-            print(error)
 
             return render(request, 'upload.html', {'form': form, 'message': message, 'error': error})
 
     return render(request, 'upload.html', {'form': ArticleForm()})
 
+def single_article(request, article_id):
+    article = get_object_or_404(Articles, id=article_id)
+
+    context = {
+        'data': article,
+        'MEDIA_URL': settings.MEDIA_URL,
+    }
+
+    return render(request, 'page.html', context)
+
+def del_article(request, article_id):
+    article = Articles.objects.get(id=article_id)
+    article.delete()
+
+    return redirect('index')
 
 def single_user(request, user_id):
     user = get_object_or_404(Users, id=user_id)
@@ -141,9 +162,6 @@ def single_user(request, user_id):
     }
 
     return render(request, 'account.html', context)
-
-def single_page(request, article_id):
-    return render(request, 'page.html')
 
 
 # views.py
@@ -165,10 +183,3 @@ def single_page(request, article_id):
 #         form = MultiFileUploadForm()
 #     return render(request, 'upload.html', {'form': form})
 
-
-def delete_session(request):
-    try:
-        del request.session['username']
-    except KeyError:
-        print('There was no session')
-    return redirect('index')

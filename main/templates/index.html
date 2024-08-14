@@ -8,11 +8,6 @@
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
 
     <style>
-
-        body {
-            padding: 1rem;
-        }
-
         .articles {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -93,88 +88,26 @@
         }
     </style>
 
-    <!-- <style>
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #F15412;
-        }
-        nav .left {
-            font-size: 1.5em;
-            color: white;
-        }
-
-        nav .middle  ul{
-            display: flex;
-            list-style: none;
-            gap: .5em;
-            justify-content: start;
-        }
-
-        nav .middle ul li {
-            font-size: 1em;
-            font-weight: bold;
-        }
-
-        nav .right {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        nav .right img {
-            width: 3em;
-            height: 3em;
-            border-radius: 100%;
-            object-fit: cover;
-        }
-
-        nav .toggler-icon {display: none;}
-
-        nav .toggler-icon > button {
-            padding-block: .7em;
-            padding-inline: .7em;
-            border-radius: 4px;
-            border: none;
-            cursor: pointer;
-        }
-
-        @media screen and (max-width: 750px) {
-            nav .middle {
-                display: none;
-            }
-
-            nav .toggler-icon {
-                display: block;
-            }
-
-            nav .active {position: fixed; overflow-x: auto; z-index: 2;}
-
-            nav .active .toggler-icon {
-                position: absolute;
-                top: 1em;
-                right: 1em;
-            }
-
-            nav .responsive {}
-            
-        }
-    </style> -->
 
     <style>
         nav {
+            z-index: 100;
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 0.5em 1em;
-            background-color: #333;
+            background-color: transparent;
             color: #F15412;
         }
     
         nav .left {
-            font-size: 1.5em;
+            font-size: 2.5em;
             color: white;
+            font-weight: bold;
         }
     
         nav .middle {
@@ -244,6 +177,26 @@
             }
         }
     </style>
+
+    <style>
+        .logo {
+            position: relative;
+        }
+
+        .logo img {
+            width: 100%;
+            height: auto;
+        }
+
+        .logo .brand {
+            position: absolute;
+            top: 20%;
+            left: 30%;
+            font-size: 3.5rem;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
     
     
 
@@ -284,9 +237,10 @@
 
         <!-- The logo of the website -->
         <section>
-            <!-- <div class="logo">
-                <img src="{% static 'images/logo.png' %}" alt="" width="100%">
-            </div> -->
+            <div class="logo">
+                <img src="{% static 'images/Logo.png' %}" alt="" width="100%">
+                <span class="brand">InSight</span>
+            </div>
         </section>
 
 
@@ -334,6 +288,7 @@
             
                         <div class="action-btn">
                             <a href="{% url 'page'  article.id %}"><button class="btn">Read Article</button></a>
+                            <a href="{% url 'del_article' article.id %}"><button class="btn">Delete</button></a>
                         </div>
         
                     </div>

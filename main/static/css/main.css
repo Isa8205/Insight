@@ -89,7 +89,7 @@ a {
 The styles for the logo 
 ------------------------------------------------------------------------------------------------------
 */
-.logo {
+/* .logo {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -107,7 +107,7 @@ The styles for the logo
     color: white;
     font-size: 3.5em;
     font-weight: bold;
-}
+} */
 
 /*
 ------------------------------------------------------------------------------------------------------
