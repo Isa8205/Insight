@@ -10,9 +10,10 @@
     <style>
         .articles {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             row-gap: 10px;
             column-gap: 15px;
+            padding-inline: 3vw;
         }
 
         .card {
@@ -42,6 +43,11 @@
 
         .content-body .hashtags {
             color: #34B3F1;
+            overflow-y: scroll;
+        }
+
+        .content-body .hashtags::-webkit-scrollbar {
+            display: none;
         }
 
         .content-body .hashtags ul {
@@ -85,6 +91,10 @@
             align-items: center;
             padding-block: 15px;
             padding-inline: 20px;
+        }
+
+        footer {
+            background-color: #F15412;
         }
     </style>
 
@@ -179,6 +189,7 @@
     </style>
 
     <style>
+        @import url(https://fonts.googleapis.com/css?family=Orbitron:regular,500,600,700,800,900);
         .logo {
             position: relative;
         }
@@ -196,12 +207,58 @@
             color: white;
             font-weight: bold;
         }
+
+        .logo > .curve {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            left: 0;
+        }
+
+        .logo .text-animation {
+            position: absolute;
+            top: 30%;
+            left: 0;
+            color: grey; 
+            background-color: transparent;
+            animation: text-reveal 3s steps(40, end) infinite;
+        }
+
+        .logo .text-animation p {
+            margin: 20%;
+            overflow: hidden;
+            font-size: 2em;
+            font-family: Orbitron;
+            font-weight: 700;
+            border-right: .15em solid orange;
+            white-space: nowrap;
+            animation: typing 6s steps(40, end) infinite;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes typing {
+            0% {
+                width: 0;
+            }
+
+            50% {
+                width: 100%;
+            }
+
+            70% {
+                width: 100%;
+            }
+
+            100% {
+                width: 0;
+            }
+        }
     </style>
     
     
 
 </head>
-<body>
+<body style="background-color: rgb(0, 18, 32);">
     <!-- The navigation bar -->
     <nav>
         <div class="left">InSight</div>
@@ -240,6 +297,10 @@
             <div class="logo">
                 <img src="{% static 'images/Logo.png' %}" alt="" width="100%">
                 <span class="brand">InSight</span>
+                <img src="{% static 'images/waves.svg' %}" alt="" class="curve">
+                <div class="text-animation">
+                    <p>Welcome to Iron Coding</p>
+                </div>
             </div>
         </section>
 
