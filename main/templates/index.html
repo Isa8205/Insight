@@ -219,9 +219,10 @@
             position: absolute;
             top: 30%;
             left: 0;
-            color: grey; 
+            color: rgb(255, 255, 255); 
             background-color: transparent;
             animation: text-reveal 3s steps(40, end) infinite;
+            animation-fill-mode: backwards;
         }
 
         .logo .text-animation p {
@@ -260,7 +261,7 @@
 </head>
 <body style="background-color: rgb(0, 18, 32);">
     <!-- The navigation bar -->
-    <nav>
+    <nav id="navbar">
         <div class="left">InSight</div>
 
         <div class="middle" id="navMenu">
@@ -294,7 +295,7 @@
 
         <!-- The logo of the website -->
         <section>
-            <div class="logo">
+            <div class="logo" id="logo">
                 <img src="{% static 'images/Logo.png' %}" alt="" width="100%">
                 <span class="brand">InSight</span>
                 <img src="{% static 'images/waves.svg' %}" alt="" class="curve">
@@ -327,7 +328,7 @@
                             <img src="{{ MEDIA_URL }}{{ article.profile_name }}" alt="{{ article.author }}">
                             <div class="profile-info">
                                 <p><b>{{ article.author }}</b></p>
-                                <i>{{ article.created_at }}</i>      
+                                <i class="date">{{ article.created_at }}</i>      
                             </div>
                         </div>
             
@@ -393,6 +394,23 @@
                     navMenu.style.display = 'flex';
                 }
             });
+
+            const logoContainer = document.getElementById('logo')
+            const navbarContainer = document.getElementById('navbar')
+            
+            window.addEventListener('scroll', function() {
+                const logorect = logoContainer.getBoundingClientRect()
+                const navrect = navbarContainer.getBoundingClientRect()
+
+                if (navrect.bottom >= logorect.bottom) {
+                    navbarContainer.style.position = 'fixed'
+                    navbarContainer.style.background = 'linear-gradient(45deg, rgb(221, 5, 149), orange)'
+                    console.log('They are in the same position')
+                } else {
+                    navbarContainer.style.background = 'transparent'
+                }
+
+            })
         });
     </script>
     
