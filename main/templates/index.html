@@ -134,9 +134,44 @@
         }
     
         nav .middle ul li {
-            font-size: 1em;
+            font-size: 1.2em;
             font-weight: bold;
             color: white;
+            cursor: pointer;
+        }
+
+        nav .middle #category {
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            align-items: center;
+            color: rgb(255, 255, 255);
+            border-radius: 5px;
+        }
+
+        nav .middle #category > ul {
+            padding: .5em;
+            gap: .5em;
+            background-color: white;
+            border-radius: 5px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            align-items: center;
+
+        }
+
+        nav .middle #category ul li {
+            color:  black;        
+        }
+
+        nav .middle #category ul li:hover {
+            color: #F15412;
+        }
+
+        #arrow-img:hover {
+            transform: rotateX(360deg);
         }
     
         nav .right {
@@ -146,8 +181,8 @@
         }
     
         nav .right img {
-            width: 3em;
-            height: 3em;
+            width: 2.5em;
+            height: 2.5em;
             border-radius: 100%;
             object-fit: cover;
         }
@@ -266,7 +301,16 @@
 
         <div class="middle" id="navMenu">
             <ul>
-                <li>Cagtegories</li>
+                <li id="category">
+                    <span>Cagtegories <img src="{% static 'images/icons/down-list.svg' %}" alt="" id="arrow-img"></span>
+                    <ul id="categorylist" style="display: none;">
+                        <li>Politics</li>
+                        <li>Sports</li>
+                        <li>Technoloy</li>
+                        <li>Science</li>
+                        <li>Health</li>
+                    </ul>
+                </li>
                 <li>Featured</li>
                 <li>Other1</li>
                 <li>Other2</li>
@@ -405,11 +449,26 @@
                 if (navrect.bottom >= logorect.bottom) {
                     navbarContainer.style.position = 'fixed'
                     navbarContainer.style.background = 'linear-gradient(45deg, rgb(221, 5, 149), orange)'
-                    console.log('They are in the same position')
                 } else {
                     navbarContainer.style.background = 'transparent'
                 }
 
+            })
+
+            const categorycontainer = document.getElementById('category')
+            const categories = document.getElementById('categorylist')
+            const arrowImg = document.getElementById('arrow-img')
+
+            categorycontainer.addEventListener('click', function() {
+                containerrect = categorycontainer.getBoundingClientRect()
+
+                if (categories.style.display === 'none') {
+                    categories.style.display = "block"
+                    categories.style.position = 'fixed'
+                    categories.style.top = `${containerrect.bottom}px`
+                } else {
+                    categories.style.display = 'none'
+                }
             })
         });
     </script>
