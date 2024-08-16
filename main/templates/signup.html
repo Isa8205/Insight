@@ -186,6 +186,22 @@
             align-items: center;
             justify-content: center;
         }
+
+        @media screen and (max-width: 750px) {
+            body {
+                justify-content: start;
+                align-items: start;
+            }
+
+            form {
+                border-radius: 0;
+                width: 100%;
+                height: 100vh;
+                margin: 0;
+                padding: 1em;
+            }
+            
+        }
     </style>
 </head>
 <body>
@@ -193,7 +209,7 @@
         {% csrf_token %}
 
         <div class="profile-preview">
-            <img src="{% static 'images/avatar1.png' %}" alt="N/A" id="preview">
+            <img src="/media/profiles/avatar1.png" alt="N/A" id="preview">
             <div id="profile-btn">
                 <button id="addbtn" type="button">Add</button>
             </div>

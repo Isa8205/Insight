@@ -10,19 +10,26 @@
     <style>
         .articles {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            row-gap: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            row-gap: 2em;
             column-gap: 15px;
             padding-inline: 3vw;
+            padding-block: 2em;
         }
 
         .card {
             color: white;
             border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            transition: box-shadow .5s ease-in-out;
+        }
+
+        .card:hover {
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.7), 0 0 8px rgba(255, 255, 255, 0.7);   
         }
 
         .card-body {
-            background-color: rgba(0, 0, 0, 0.795);
+            background-color: #1C1F26;
             border-radius: 10px;
             padding: 10px;
         }
@@ -129,6 +136,7 @@
             list-style: none;
             gap: 1em;
             justify-content: start;
+            align-items: center;
             margin: 0;
             padding: 0;
         }
@@ -179,7 +187,7 @@
             justify-content: center;
             align-items: center;
         }
-    
+        
         nav .right img {
             width: 2.5em;
             height: 2.5em;
@@ -235,6 +243,7 @@
         }
 
         .logo .brand {
+            display: none;
             position: absolute;
             top: 20%;
             left: 30%;
@@ -261,15 +270,27 @@
         }
 
         .logo .text-animation p {
-            margin: 20%;
+            margin-left: 20%;
             overflow: hidden;
-            font-size: 2em;
+            font-size: 1.4em;
             font-family: Orbitron;
             font-weight: 700;
             border-right: .15em solid orange;
             white-space: nowrap;
             animation: typing 6s steps(40, end) infinite;
             animation-fill-mode: forwards;
+        }
+
+        @media screen and (max-width: 750px) {
+            .logo .text-animation {
+                bottom: 10%;
+                margin-inline-start: 0;
+            }
+
+            .logo .text-animation .p {
+                margin-left: 0;
+                font-size: .5em;
+            }            
         }
 
         @keyframes typing {
@@ -320,9 +341,11 @@
 
         <div class="right">
             {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}"><button class="btn btn-sm btn-red">Sign out</button></a>
                 <img src="{{ MEDIA_URL }}{{ user.profile }}" alt="{{ user.username }}">
             {% else %}
-                <img src="{{ MEDIA_URL }}profiles/avatar1.png" alt="Login">
+                <a href="{% url 'login' %}"><button class="btn btn-sm btn-cyan">Sign in</button></a>
+                <a href="{% url 'signup' %}"><button class="btn btn-sm btn-cyan">Sign up</button></a>
             {% endif %}
         </div>
 
@@ -342,22 +365,12 @@
             <div class="logo" id="logo">
                 <img src="{% static 'images/Logo.png' %}" alt="" width="100%">
                 <span class="brand">InSight</span>
-                <img src="{% static 'images/waves.svg' %}" alt="" class="curve">
+                <!-- <img src="{% static 'images/curve-mobile.svg' %}" alt="" class="curve"> -->
                 <div class="text-animation">
                     <p>Welcome to Iron Coding</p>
                 </div>
             </div>
         </section>
-
-
-        {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}">Logout</a>
-        <a href="{% url 'upload' %}">upload</a>
-        <p>{{ user.username }}</p>
-        {% else %}
-        <a href="{% url 'login' %}">Login</a>
-        {% endif %}
-        <a href="{% url 'signup' %}">Signup</a>
 
         <!-- The content of the pages -->
         <section>
@@ -448,7 +461,7 @@
 
                 if (navrect.bottom >= logorect.bottom) {
                     navbarContainer.style.position = 'fixed'
-                    navbarContainer.style.background = 'linear-gradient(45deg, rgb(221, 5, 149), orange)'
+                    navbarContainer.style.background = 'linear-gradient(to right, #F85AA4, #EF713F, #EC7A1D)'
                 } else {
                     navbarContainer.style.background = 'transparent'
                 }

@@ -89,25 +89,6 @@ a {
 The styles for the logo 
 ------------------------------------------------------------------------------------------------------
 */
-/* .logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 250px;
-    padding: 0;
-    position: relative;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-image: url(../images/waves.svg);
-}
-
-.logo-text {
-    position: absolute;
-    color: white;
-    font-size: 3.5em;
-    font-weight: bold;
-} */
 
 /*
 ------------------------------------------------------------------------------------------------------
@@ -123,27 +104,32 @@ The styles for the buttons
 .btn {
     --btn-background: rgb(43, 45, 66);
     --btn-text-color: #fff;
+    --padding-inline: 20px;
+    --padding-block: 10px; 
     background: var(--btn-background);
     color: var(--btn-text-color);
-    padding-block: 10px;
-    padding-inline: 20px;
     border-radius: 5px;
-    font-size: 100%;
-    font-weight: 545;
+    padding-block: var(--padding-block);
+    padding-inline: var(--padding-inline);
     margin-inline: 5px;
-    margin-block: 10px;
+    /* margin-block: 10px; */
     border: none;
     cursor: pointer;
 }
 
-.btn:hover {
+/* .btn:hover {
     border-color: rgba(0, 0, 255, 0.5);
     outline: none;
     box-shadow: 0 0 10px rgba(0, 0, 255, 0.5);
-}
+} */
 
 .btn:active {
     opacity: .7;
+}
+
+.btn-sm {
+    --padding-block: .5em;
+    --padding-inline: 1em;
 }
 
 .btn-blue {
@@ -195,6 +181,16 @@ The styles for the buttons
     --btn-background: rgb(173, 14, 173);
     --btn-text-color: white; 
 }
+
+ .btn-cyan {
+    --btn-background: #34B3F1;
+    --btn-text-color: white;
+ }
+
+ .btn-cyan:hover {
+    --btn-background: #2e99ce;
+    --btn-text-color: white;
+ }
 
 /* 
 ----------------------------------------------------------------------------------------
