@@ -20,7 +20,7 @@
         .card {
             color: white;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
             transition: box-shadow .5s ease-in-out;
         }
 
@@ -194,6 +194,18 @@
             height: 2.5em;
             border-radius: 100%;
             object-fit: cover;
+            cursor: pointer;
+        }
+
+        nav .right .account-actions {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1em;
+            background-color: white;
+            border-radius: 5px;
+
         }
     
         nav .toggler-icon {
@@ -342,8 +354,13 @@
 
         <div class="right">
             {% if user.is_authenticated %}
-                <a href="{% url 'logout' %}"><button class="btn btn-sm btn-red">Sign out</button></a>
-                <img src="{{ MEDIA_URL }}{{ user.profile }}" alt="{{ user.username }}">
+                <a href="{% url 'upload' %}"><button class="btn btn-purple"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-plus"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M8 12h8"/><path d="M12 8v8"/></svg> Create</button></a>
+                <img src="{{ MEDIA_URL }}{{ user.profile }}" alt="{{ user.username }}" id="profile_pic">
+                <div class="account-actions" id="account-actions">
+                    <h4>{{ user.full_name }}</h4>
+                    <a href="{% url 'user_account' user.id %}"><button class="btn btn-sm btn-purple">View Profile <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></button></a>
+                    <a href="{% url 'logout' %}"><button class="btn btn-sm btn-red">Sign out</button></a>
+                </div>
             {% else %}
                 <a href="{% url 'login' %}"><button class="btn btn-sm btn-cyan">Sign in</button></a>
                 <a href="{% url 'signup' %}"><button class="btn btn-sm btn-cyan">Sign up</button></a>
@@ -383,7 +400,7 @@
                     <div class="card-body">
         
                         <div class="top">
-                            <img src="{{ MEDIA_URL }}{{ article.profile_name }}" alt="{{ article.author }}">
+                            <a href="{% url 'user_account' article.author_id %}"><img src="{{ MEDIA_URL }}{{ article.profile_name }}" alt="{{ article.author }}"></a>
                             <div class="profile-info">
                                 <p><b>{{ article.author }}</b></p>
                                 <i class="date">{{ article.created_at }}</i>      
@@ -407,8 +424,8 @@
                         </div>
             
                         <div class="action-btn">
-                            <a href="{% url 'page'  article.id %}"><button class="btn">Read Article</button></a>
-                            <a href="{% url 'del_article' article.id %}"><button class="btn">Delete</button></a>
+                            <a href="{% url 'page'  article.id %}"><button class="btn btn-cyan">Read Article</button></a>
+                            <!-- <a href="{% url 'del_article' article.id %}"><button class="btn">Delete</button></a> -->
                         </div>
         
                     </div>
@@ -484,48 +501,37 @@
                     categories.style.display = 'none'
                 }
             })
+
+            const profile_pic_div = document.getElementById('profile_pic')
+            const account_actions = document.getElementById('account-actions')
+
+            profile_pic_div.addEventListener('mouseover', function() {
+                if (account_actions.style.display === 'none') {
+                    rect = profile_pic_div.getBoundingClientRect()
+    
+                    account_actions.style.display = 'flex'
+                    account_actions.style.position = 'fixed'
+                    account_actions.style.top = `${rect.bottom}px`
+                } else {
+                    account_actions.style.display = 'none'
+                }
+            })
         });
     </script>
     
 
 {#    <script src="{% static 'js/main.js' %}"></script>#}
     <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            // Function to handle like button click
-            const likeButtons = document.querySelectorAll('.like-button');
-            likeButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const id = button.getAttribute('data-id');
-                    
+        document.addEventListener('DOMContentLoaded', function () {
 
-                    // Optionally, send the like count to the server
-                    // updateLikeCountOnServer(id, likeCount);
-                });
-            });
-
-            // Function to handle dislike button click
-            const dislikeButtons = document.querySelectorAll('.dislike-button');
-            dislikeButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const id = button.getAttribute('data-id');
-                    const dislikeCountSpan = document.getElementById(`dislike-count-${id}`);
-                    let dislikeCount = parseInt(dislikeCountSpan.textContent, 10);
-                    dislikeCount++;
-                    dislikeCountSpan.textContent = dislikeCount;
-
-                    // Optionally, send the dislike count to the server
-                    // updateDislikeCountOnServer(id, dislikeCount);
-                });
-            });
-
-            const dates = document.querySelectorAll('.date');
+            const dates = document.querySelectorAll('.date')
             dates.forEach(function(date) {
-                const x = date.textContent;
-                const y = x.split(',');
-                const z = y[0].split(' ');
+                const x = date.textContent
+                const y = x.split(',')
+                const z = y[0].split(' ')
                 date.textContent = z[1] + ', ' + z[0] + ', ' + y[1]                
             })
-        });
+        })
     </script>
 </body>
 </html>

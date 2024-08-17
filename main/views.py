@@ -13,7 +13,7 @@ from main.models import Articles, Users
 
 # Create your views here.
 def index(request):
-    articles = Articles.objects.extra(select={'profile_name': 'SELECT profile FROM main_users WHERE username = author', 'user_id':'SELECT id from main_users WHERE username = author'})
+    articles = Articles.objects.extra(select={'profile_name': 'SELECT profile FROM main_users WHERE username = author', 'author_id':'SELECT id from main_users WHERE username = author'})
     
     context = {
         'data': articles,
