@@ -332,20 +332,10 @@
 
         <div class="middle" id="navMenu">
             <ul>
-                <li id="category">
-                    <span>Cagtegories</span>
-                    <ul id="categorylist" style="display: none;">
-                        <li>Politics</li>
-                        <li>Sports</li>
-                        <li>Technoloy</li>
-                        <li>Science</li>
-                        <li>Health</li>
-                    </ul>
-                </li>
-                <li>Featured</li>
-                <li>About Us</li>
-                <li>Contact Us</li>
-                <li>Technology</li>
+                <li class="navlinks">Categories</li>
+                <li class="navlinks">Explore</li>
+                <li class="navlinks">About</li>
+                <li class="navlinks">Contact us</li>
             </ul>
         </div>
 
@@ -432,7 +422,7 @@
             
                         <div class="action-btn">
                             <a href="{% url 'page'  article.id %}"><button class="btn btn-cyan">Read Article</button></a>
-                            <!-- <a href="{% url 'del_article' article.id %}"><button class="btn">Delete</button></a> -->
+                            <a href="{% url 'del_article' article.id %}"><button class="btn">Delete</button></a>
                         </div>
         
                     </div>
@@ -485,21 +475,6 @@
 
             })
 
-            const categorycontainer = document.getElementById('category')
-            const categories = document.getElementById('list-options')
-
-            categorycontainer.addEventListener('mouseover', function() {
-                navrect = document.getElementById('navbar').getBoundingClientRect()
-
-                if (categories.style.display === 'none') {
-                    categories.style.display = "flex"
-                    categories.style.position = 'fixed'
-                    categories.style.top = `${navrect.bottom}px`
-                } else {
-                    categories.style.display = 'none'
-                }
-            })
-
             const profile_pic_div = document.getElementById('profile_pic')
             const account_actions = document.getElementById('account-actions')
 
@@ -515,6 +490,32 @@
                 }
             })
         });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navlinks = document.querySelectorAll('.navlinks')
+            const list_options = document.getElementById('list-options')
+            const navbar = document.getElementById('navbar')
+
+            const navrect = navbar.getBoundingClientRect()
+
+            navlinks.forEach((element) => {
+                element.addEventListener('mouseover', function() {
+                    element.style.color = 'white'
+                    element.style.textDecoration = 'underline'
+                    list_options.style.top = `${navrect.bottom}px`
+                    list_options.style.display = 'flex'
+                })
+
+                element.addEventListener('mouseout', function(event) {
+                    mousex = event.clientX
+                    mousey = event.clientY
+                    list_options.style.display = 'none'
+                    element.removeAttribute('style')
+                })
+            })
+        })
     </script>
     
 

@@ -152,7 +152,7 @@
             <button>Search</button>
         </div>
         <div class="profile">
-            <img src="/media/profiles/zalykaziqi.png" alt="Your profile">
+            <img src="{{ MEDIA_URL }}{{ user.profile }}" alt="{{ user.username }}">
         </div>
     </nav>
 
@@ -173,26 +173,27 @@
         <section class="article-content">
     
             <div class="cover-image">
-                <img src="/media/profiles/Mboso1.png" alt="Cover Image">
+                <img src="{{ MEDIA_URL }}{{ data.cover_image }}" alt="Cover Image">
             </div>
 
             <div class="author">
-                <img src="/media/wave.svg" alt="profile">
+                <img src="{{ MEDIA_URL }}{{ author.profile }}" alt="profile">
                 <div class="info">
-                    <b>Isaiah Kibet</b><br>
-                    <i>10 <sup>th</sup> August, 2025 &dot; 8.5M views</i>
+                    <b>{{ article.author }}</b><br>
+                    <i>{{ article.created_at }}</i>
                 </div>
             </div>
     
             <article>
     
                 <header>
-                    <h2>The rise of AI: is this really how it's going to end for us?</h2>
+                    <h2>{{ article.title }}</h2>
                 </header>
-    
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, fugit suscipit maiores officiis fugiat iusto rem repellat. Culpa ullam, soluta aperiam iusto optio enim dolor neque eaque nam autem pariatur distinctio voluptatibus voluptas eveniet quaerat eius perferendis porro? Accusantium nam reiciendis praesentium recusandae est quaerat, sunt placeat! Repudiandae eaque porro aliquam alias placeat dolorum laboriosam molestiae? In iusto quos delectus recusandae dicta ducimus obcaecati quasi aliquid quod consectetur. Repellat aliquid cupiditate, maxime asperiores at sed nam tempore atque tempora, similique iste temporibus, labore distinctio commodi sequi voluptas hic eius ipsum repellendus consectetur unde dolore optio dolorem quos. In, veniam sapiente?</p>
                 
+                <p>{{ article.content }}</p>
+
             </article>
+
         </section>
     
         <section class="advertisements">

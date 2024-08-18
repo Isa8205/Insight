@@ -1,5 +1,6 @@
 import http
 import json
+import os
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -139,9 +140,11 @@ def upload(request):
 
 def single_article(request, article_id):
     article = get_object_or_404(Articles, id=article_id)
+    author = Users.objects.get(username = article.author)
 
     context = {
-        'data': article,
+        'author': author,
+        'article': article,
         'MEDIA_URL': settings.MEDIA_URL,
     }
 
@@ -149,7 +152,11 @@ def single_article(request, article_id):
 
 def del_article(request, article_id):
     article = Articles.objects.get(id=article_id)
+    file_path = os.path.join(settings.MEDIA_ROOT, str(article.cover_image))
+    
     article.delete()
+    if os.path.exists(file_path):
+        os.remove(file_path)
 
     return redirect('index')
 
