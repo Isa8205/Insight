@@ -21,11 +21,11 @@
             color: white;
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
-            transition: box-shadow .5s ease-in-out;
+            transition: box-shadow .8s ease-in-out;
         }
 
         .card:hover {
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.7), 0 0 8px rgba(255, 255, 255, 0.7);   
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);  
         }
 
         .card-body {
@@ -102,7 +102,22 @@
         }
 
         footer {
-            background-color: #F15412;
+            background-color: #9d4f1a;
+            text-align: center;
+            border-radius: 0;
+        }
+
+        footer ul {
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1em;
+        }
+
+        footer ul li:hover {
+            color: #cfc31f;
+            cursor: pointer;
         }
     </style>
 
@@ -148,40 +163,6 @@
             color: white;
             cursor: pointer;
         }
-
-        nav .middle #category {
-            display: flex;
-            flex-direction: column;
-            justify-content: start;
-            align-items: center;
-            color: rgb(255, 255, 255);
-            border-radius: 5px;
-        }
-
-        nav .middle #category > ul {
-            padding: .5em;
-            gap: .5em;
-            background-color: white;
-            border-radius: 5px;
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            justify-content: start;
-            align-items: center;
-
-        }
-
-        nav .middle #category ul li {
-            color:  black;        
-        }
-
-        nav .middle #category ul li:hover {
-            color: #F15412;
-        }
-
-        #arrow-img:hover {
-            transform: rotateX(360deg);
-        }
     
         nav .right {
             display: flex;
@@ -219,6 +200,22 @@
             border: none;
             background-color: #333;
             cursor: pointer;
+        }
+
+        nav .list-options {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            right: 0;
+            left: 0;
+            background-color: rgba(245, 245, 245, 0.589);
+        }
+
+        nav .list-options > .content {
+            background: white;
+            color: black;
+            border-radius: 10px;
         }
     
         @media screen and (max-width: 750px) {
@@ -336,7 +333,7 @@
         <div class="middle" id="navMenu">
             <ul>
                 <li id="category">
-                    <span>Cagtegories <img src="{% static 'images/icons/down-list.svg' %}" alt="" id="arrow-img"></span>
+                    <span>Cagtegories</span>
                     <ul id="categorylist" style="display: none;">
                         <li>Politics</li>
                         <li>Sports</li>
@@ -346,9 +343,9 @@
                     </ul>
                 </li>
                 <li>Featured</li>
-                <li>Other1</li>
-                <li>Other2</li>
-                <li>Other3</li>
+                <li>About Us</li>
+                <li>Contact Us</li>
+                <li>Technology</li>
             </ul>
         </div>
 
@@ -371,6 +368,16 @@
             <button id="navToggle">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F15412" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
             </button>
+        </div>
+
+        <div class="list-options" id="list-options">
+            <div class="content">
+                <ul>
+                    <li>Food</li>
+                    <li>News</li>
+                </ul>
+
+            </div>
         </div>
         
     </nav>
@@ -438,19 +445,11 @@
         </section>
 
         <footer class="footer">
-            <div class="col-4">
-                <h3>About Us</h3>
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quibusdam explicabo ipsa tempora vero</p>
-            </div>
-    
-            <div class="col-4">
-                <h3>Review</h3>
-                <form action="" method="post">
-                    <input type="text" placeholder="Example: User Interface" class="form-input">
-                    <textarea name="" id="" cols="30" rows="10" placeholder="Write something"></textarea>
-                    <input type="submit" value="Send" class="btn">
-                </form>
-            </div>
+            <ul>
+                <li>Terms of service</li>
+                <li>Privacy policy</li>
+                <li>&copy; Isaiah Kibet 2024</li>
+            </ul>
         </footer>
 
     </main>
@@ -487,16 +486,15 @@
             })
 
             const categorycontainer = document.getElementById('category')
-            const categories = document.getElementById('categorylist')
-            const arrowImg = document.getElementById('arrow-img')
+            const categories = document.getElementById('list-options')
 
-            categorycontainer.addEventListener('click', function() {
-                containerrect = categorycontainer.getBoundingClientRect()
+            categorycontainer.addEventListener('mouseover', function() {
+                navrect = document.getElementById('navbar').getBoundingClientRect()
 
                 if (categories.style.display === 'none') {
-                    categories.style.display = "block"
+                    categories.style.display = "flex"
                     categories.style.position = 'fixed'
-                    categories.style.top = `${containerrect.bottom}px`
+                    categories.style.top = `${navrect.bottom}px`
                 } else {
                     categories.style.display = 'none'
                 }
