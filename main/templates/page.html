@@ -8,15 +8,16 @@
 
     <style>
         body {
-            background-color: grey;
+            background-color: #001220;
             font-family: sans-serif;
+            margin: 0;
+            padding: 0;
         }
         main {
             display: flex;
             justify-content: center;
             align-items: start;
             gap: 10px;
-            margin-inline: 20vw;
         }
         nav {
             height: fit-content;
@@ -33,7 +34,7 @@
             padding-block: 5px;
         }
 
-        nav .logo {
+        nav .logo span {
             padding-block: 5px;
             padding-inline: 10px;
             background-color: black;
@@ -67,56 +68,91 @@
         }
 
         nav .profile img {
-            width: 50px;
-            height: 50px;
+            width: 3em;
+            height: 3em;
             object-fit: cover;
             border-radius: 50%;
         }
 
         main {
-            margin-top: 60px;
+            margin-top: 4.5em;
         }
         
         .reactions .content ul {
             list-style: none;
-            padding: 0;
+            padding: 1rem;
             margin: 0;
             display: flex;
             flex-direction: column;
+            place-items: center;
             gap: 10px;
         }
 
+        .reactions .content ul li {
+            display: flex;
+            flex-direction: column;
+            place-items: center;
+            gap: .2em;
+            cursor: pointer;
+        }
+
+        .reactions .content ul li svg {
+            fill: none;
+            stroke: white;
+        }
+
+        .reactions .content ul li svg:hover {
+            stroke: chocolate;
+        }
+
+        .reactions .content ul li:not(:nth-child(3)) > svg:active {
+            stroke: chocolate;
+            fill: chocolate;
+        }
+
+        .reactions .content ul li span {
+            color: grey;
+        }
+
         .article-content {
-            width: 60vw;
-            background-color: white;
+            max-width: 50vw;
+            background-color: #2b313a;
+            color: white;
             border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.508);
         }
 
         .author {
+            padding: 1em;
+            gap: .5em;
             display: flex;
             justify-content: start;
             align-items: center;
         }
 
         .author img {
-            height: 100px;
-            width: 100px;
+            height: 4em;
+            width: 4rem;
             object-fit: cover;
             border-radius: 50%;
         }
 
         .reactions, .advertisements {
-            background-color: white;
-            border-radius: 5px;
+            background-color: #2b313a;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.651), 0 0 10px rgba(0, 0, 0, 0.651);
         }
 
         .cover-image img {
+            width: 100%;
+            max-height: 40vh;
+            object-fit: cover;
             border-radius: 10px 10px 0 0;
         }
         
         .article-content article {
-            padding-inline: 10px;
-            padding-block: 5px;
+            padding-inline: .8em;
+            padding-block: .8em;
             text-align: start;
             text-wrap: wrap;
         }
@@ -145,7 +181,7 @@
 
     <nav>
         <div class="logo">
-            InSight
+            <a href="{% url 'index' %}"><span>InSight</span></a>
         </div>
         <div class="search-box">
             <input type="search" name="search" id="search">
@@ -159,12 +195,27 @@
     <main>
         <section class="reactions">
 
-            <div class="content">
+            <div class="content" id="reactions">
                 <ul>
-                    <li><img src="{% static 'images/logos/reaction.svg' %}" alt="Add reaction"></li>
-                    <li><img src="{% static 'images/logos/comment.svg' %}" alt="comment"></li>
-                    <li><img src="{% static 'images/logos/save.svg' %}" alt="save"></li>
-                    <li><img src="{% static 'images/logos/more.svg' %}" alt="More"></li>
+                    <li title="Likes">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                        <span id="likecount">100</span>
+                    </li>
+                    <li title="Comments">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        <span id="commentcount">20</span>
+                    </li>
+                    <li title="Views">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye" title="views"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+                        <span id="viewcount">54</span>
+                    </li>
+                    <li title="Save">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                        <span id="savecount">35.3k</span>
+                    </li>
+                    <li title="More">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                    </li>
                 </ul>
             </div>
     
@@ -173,7 +224,7 @@
         <section class="article-content">
     
             <div class="cover-image">
-                <img src="{{ MEDIA_URL }}{{ data.cover_image }}" alt="Cover Image">
+                <img src="{{ MEDIA_URL }}{{ article.cover_image }}" alt="Cover Image">
             </div>
 
             <div class="author">
@@ -196,7 +247,7 @@
 
         </section>
     
-        <section class="advertisements">
+        <!-- <section class="advertisements">
     
             <div class="advert">
                 <img src="/media/profiles/car1.jpg" alt="Display image">
@@ -208,7 +259,7 @@
                 </article>
             </div>
     
-        </section>
+        </section> -->
     </main>
 
     <footer>
