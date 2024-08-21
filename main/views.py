@@ -160,16 +160,22 @@ def update_like_count(request):
     data = json.loads(body_unicode)
     author = data.get('author')
     articleid =int(data.get('articleId'))
+    action = data.get('action')
     article = Articles.objects.get(id = articleid)
 
-    like = ArticleLikes()
-    like.author = author
-    like.article_id = article
-    like.save()
+    if action == 'Add':
+        like = ArticleLikes()
+        like.author = author
+        like.article_id = article
+        like.save()
+        status = 'Added'
+    else:
+        ArticleLikes.objects.filter(author = author, article_id = article).delete()
+        status = 'Removed'    
     
     likecount = ArticleLikes.objects.filter(article_id = article).count()
 
-    return JsonResponse({"status": 'success', 'likecount': likecount})
+    return JsonResponse({"status": status, 'likecount': likecount})
 
 @csrf_exempt
 def update_dislike_count(request):
@@ -177,16 +183,23 @@ def update_dislike_count(request):
     data = json.loads(body_unicode)
     author = data.get('author')
     articleid =int(data.get('articleId'))
+    action = data.get('action')
     article = Articles.objects.get(id = articleid)
+    print(data)
 
-    dislike = ArticleDislikes()
-    dislike.author = author
-    dislike.article_id = article
-    dislike.save()
+    if action == 'Add':
+        dislike = ArticleDislikes()
+        dislike.author = author
+        dislike.article_id = article
+        dislike.save()
+        status = 'Added'
+    else:
+        ArticleDislikes.objects.filter(author = author, article_id = article).delete()
+        status = 'Removed'    
     
     dislikecount = ArticleDislikes.objects.filter(article_id = article).count()
 
-    return JsonResponse({"status": 'success', 'dislikecount': dislikecount})
+    return JsonResponse({"status": status, 'dislikecount': dislikecount})
 
 @csrf_exempt
 def update_comment_count(request):
@@ -196,18 +209,24 @@ def update_comment_count(request):
 def update_save_count(request):
     body_unicode = request.body.decode('utf-8')
     data = json.loads(body_unicode)
-    author = data.get('author')
+    author = Users.objects.get(username = data.get('author'))
     articleid =int(data.get('articleId'))
+    action = data.get('action')
     article = Articles.objects.get(id = articleid)
 
-    bookmark = ArticleSaves()
-    bookmark.author = Users.objects.get(username = author)
-    bookmark.article_id = article
-    bookmark.save()
+    if action == 'Add':
+        bookmark = ArticleSaves()
+        bookmark.author = author
+        bookmark.article_id = article
+        bookmark.save()
+        status = 'Added'
+    else:
+        ArticleSaves.objects.filter(author = author, article_id = article).delete()
+        status = 'Removed'
     
-    dislikecount = ArticleSaves.objects.filter(article_id = article.id).count()
+    dislikecount = ArticleSaves.objects.filter(article_id = article).count()
 
-    return JsonResponse({"status": 'success', 'dislikecount': dislikecount})
+    return JsonResponse({"status": status, 'dislikecount': dislikecount})
 
 def single_article(request, article_id):
     article = get_object_or_404(Articles, id=article_id)
@@ -221,8 +240,8 @@ def single_article(request, article_id):
 
     like_count = ArticleLikes.objects.filter(article_id = article.id).count()
     dislike_count = ArticleDislikes.objects.filter(article_id = article.id).count()
-    liked = ArticleLikes.objects.filter(article_id = article.id, author = request.user.id).exists()
-    disliked = ArticleDislikes.objects.filter(article_id = article.id, author = request.user.id).exists()
+    liked = ArticleLikes.objects.filter(article_id = article.id, author = request.user.username).exists()
+    disliked = ArticleDislikes.objects.filter(article_id = article.id, author = request.user.username).exists()
 
     save_count = ArticleSaves.objects.filter(article_id = article.id).count()
     saved = ArticleSaves.objects.filter(article_id = article.id, author = request.user.id).exists()

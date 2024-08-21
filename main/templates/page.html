@@ -199,11 +199,19 @@
             <div class="content" id="reactions">
                 <ul>
                     <li title="Likes" id="likes">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart" id="like-icon"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                        {% if reactions.liked == True %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: chocolate; stroke: chocolate;" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart" id="like-icon"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                        {% else %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart" id="like-icon"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                        {% endif %}
                         <span id="likecount">{{ reactions.likes }}</span>
                     </li>
                     <li title="dislikes" id="dislikes">
+                        {% if reactions.disliked == True %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: chocolate; stroke: chocolate;" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-thumbs-down" id="dislike-icon"><path d="M17 14V2"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"/></svg>
+                        {% else %}
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-thumbs-down" id="dislike-icon"><path d="M17 14V2"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"/></svg>
+                        {% endif %}
                         <span class="dislikecount">{{ reactions.dislikes }}</span>
                     </li>
                     <li title="Comments" id="comments">
@@ -215,7 +223,11 @@
                         <span id="viewcount">{{ reactions.views }}</span>
                     </li>
                     <li title="Save" id="saves">
+                        {% if reactions.saved == True %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: chocolate; stroke: chocolate;"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark" id="save-icon"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                        {% else %}
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark" id="save-icon"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                        {% endif %}
                         <span id="savecount">{{ reactions.saves }}</span>
                     </li>
                     <li title="More" id="more">
@@ -299,61 +311,113 @@
 
             //Handling of the like functionality
             const likeBtn = document.getElementById('likes')
-            const liked_state = '{{ reactions.liked }}'
-            console.log(liked_state)
+            let liked_state = '{{ reactions.liked }}'
 
             likeBtn.addEventListener('click', function() {
 
-                if (liked_state === 'False') {
-                    fetch("{% url 'article_like_count' %}", {
-                        method: 'POST',
-                        headers: {
-                            'content-type': 'application/json'
-                        },
-                        body: JSON.stringify(data)
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('likecount').textContent = data.likecount
-                        document.getElementById('like-icon').style.fill = 'chocolate'
-                        document.getElementById('like-icon').style.stroke = 'chocolate'
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    })
-                } else {
-                    //pass
-                }
+                data.action = liked_state === 'True' ? 'Remove' : 'Add'
+                
+                fetch("{% url 'article_like_count' %}", {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const likecountdiv = document.getElementById('likecount')
+                    const likeicon = document.getElementById('like-icon')
 
+                    if (data.status === 'Added') {
+                        likeicon.style.fill = 'chocolate'
+                        likeicon.style.stroke = 'chocolate'
+                    } else {
+                        likeicon.removeAttribute('style')                      
+                    }
+
+                    likecountdiv.textContent = data.likecount
+                    liked_state = data.status === 'Added' ? 'True' : 'False'
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            })
+
+            //Fucntionality for the dislikes
+            const dislikeBtn = document.getElementById('dislikes')
+            let disliked_state = '{{ reactions.disliked }}'
+
+            dislikeBtn.addEventListener('click', function() {
+
+                data.action = disliked_state === 'True' ? 'Remove' : 'Add'
+                
+                fetch("{% url 'article_dislike_count' %}", {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.status)
+                    const dislikecountdiv = document.getElementById('dislikecount')
+                    const dislikeicon = document.getElementById('dislike-icon')
+
+                    if (data.status === 'Added') {
+                        dislikeicon.style.fill = 'chocolate'
+                        dislikeicon.style.stroke = 'chocolate'
+                    } else {
+                        dislikeicon.removeAttribute('style')                      
+                    }
+
+                    dislikecountdiv.textContent = data.dislikecount
+                    disliked_state = data.status === 'Added' ? 'True' : 'False'
+                })
+                .catch(err => {
+                    console.log(err)
+                })
             })
 
             //Functionality for adding bookmark
             const bookmarkbtn = document.getElementById('saves')
-            const saveState = "{{ reactions.saved }}"
+            let saveState = "{{ reactions.saved }}"
 
             bookmarkbtn.addEventListener('click', function() {
 
-                if (saveState === 'False') {
-                    fetch("{% url 'article_save_count' %}", {
-                        method: 'POST',
-                        headers: {
-                            'content-type': 'application/json'
-                        },
-                        body: JSON.stringify(data)
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('savecount').textContent = data.dislikecount
-                        document.getElementById('save-icon').style.fill = 'chocolate'
-                        document.getElementById('save-icon').style.stroke = 'chocolate'
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    })
-                }
-            })            
+                data.action = saveState === 'True' ? 'Remove' : 'Add'
 
+                fetch("{% url 'article_save_count' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const saveicon = document.getElementById('save-icon')
+
+                    if (data.status === 'Added') {
+                        saveicon.style.fill = 'chocolate'
+                        saveicon.style.stroke = 'chocolate'
+                    } else {
+                        saveicon.removeAttribute('style')
+                    }
+                    
+                    document.getElementById('savecount').textContent = data.dislikecount
+                    saveState = data.status === 'Added' ? 'True' : 'False'
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+
+            })   
+            
         })
+
+        
     </script>
 </body>
 </html>
