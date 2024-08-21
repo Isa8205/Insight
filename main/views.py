@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate, login
 
 from Insight import settings
 from main.forms import ArticleForm, SignupForm, UserLoginForm
-from main.models import Articles, Users
+from main.models import ArticleViews, Articles, Users
 
 
 # Create your views here.
@@ -137,6 +137,23 @@ def upload(request):
             return render(request, 'upload.html', {'form': form, 'message': message, 'error': error})
 
     return render(request, 'upload.html', {'form': ArticleForm()})
+
+@csrf_exempt
+def update_view_count(request):
+    body_unicode = request.body.decode('utf-8')
+    data = json.loads(body_unicode)
+    author = data.get('author')
+    articleid =int(data.get('articleId'))
+    article = Articles.objects.get(id = articleid)
+
+    view = ArticleViews()
+    view.author = author
+    view.article = article
+    view.save()
+
+    viewcount = ArticleViews.objects.filter(article = article).count()
+
+    return JsonResponse({"status": "Success", "viewcount": viewcount})
 
 def single_article(request, article_id):
     article = get_object_or_404(Articles, id=article_id)

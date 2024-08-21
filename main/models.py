@@ -34,7 +34,6 @@ class Articles(models.Model):
     title = models.CharField(max_length=100, null=False)
     content = models.TextField(null=False)
     published = models.BooleanField(default=False)
-    views = models.IntegerField(default=0)
     cover_image = models.FileField(upload_to='Articles/cover_images/', null=True)
     content_images  = models.FileField(upload_to='Articles/content_images/', null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -45,6 +44,14 @@ class Articles(models.Model):
 
     def __str__(self):
         return self.author + " - " + self.title
+    
+class ArticleViews(models.Model):
+    author = models.CharField(max_length=100, null=False)
+    article = models.ForeignKey(Articles, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.author} viewed {self.article} at {self.created_at}"
 
 
 class Comments(models.Model):

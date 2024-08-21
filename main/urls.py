@@ -11,4 +11,5 @@ urlpatterns = [
     path('articles/content/<int:article_id>', views.single_article, name='page'),
     path('check_username/', views.check_username, name='check_username'),
     path('articles/remove/<int:article_id>', views.del_article, name='del_article'),
+    path('add_article_views/', views.update_view_count, name='article_view_count'),
 ]

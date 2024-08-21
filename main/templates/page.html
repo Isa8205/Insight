@@ -144,6 +144,7 @@
         }
 
         .cover-image img {
+            clip: auto;
             width: 100%;
             max-height: 40vh;
             object-fit: cover;
@@ -265,6 +266,27 @@
     <footer>
         <center>&copy; Isaiah Kibet Rop. 2024</center>
     </footer>
-    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            articleId = "{{ article.id }}"
+            author = "{{ user.username }}" ? "{{user.username}}" : 'Guest'
+
+            data = {articleId: articleId, author: author}
+
+            fetch('{% url "article_view_count" %}', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                let viewCountDiv = document.getElementById('viewcount')
+                viewCountDiv.textContent = data.viewcount
+            })
+            .catch(err => {console.error(err)})
+        })
+    </script>
 </body>
 </html>
