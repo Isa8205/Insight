@@ -54,19 +54,46 @@ class ArticleViews(models.Model):
         return f"{self.author} viewed {self.article} at {self.created_at}"
 
 
-class Comments(models.Model):
+class ArticleComments(models.Model):
     author = models.CharField(max_length=100, null=False)
     content = models.TextField(null=False)
-    article = models.ForeignKey(Articles, on_delete=models.CASCADE)
+    article_id = models.ForeignKey(Articles, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name_plural = 'Comments'
 
     def __str__(self):
         return self.author + '-' + self.content
+    
+    
+class ArticleLikes(models.Model):
+    author = models.CharField(max_length=100, null=False)
+    article_id = models.ForeignKey(Articles, on_delete=models.CASCADE)
+    time = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name_plural = 'Likes'
+
+    def __str__(self):
+        return f'{self.author} liked {self.article} at {self.time}'
+    
+class ArticleDislikes(models.Model):
+    author = models.CharField(max_length=100, null=False)
+    article_id = models.ForeignKey(Articles, on_delete=models.CASCADE)
+    time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = 'Likes'
+
+    def __str__(self):
+        return '{author} disliked {article} at {time}'
+    
+class ArticleSaves(models.Model):
+    author = models.ForeignKey(Users, on_delete=models.CASCADE)
+    article_id = models.ForeignKey(Articles, on_delete=models.CASCADE)
+    time = models.DateTimeField(auto_now_add=True)
+    
 
 class SiteReviews(models.Model):
     content = models.TextField(null=False)
@@ -79,25 +106,3 @@ class SiteReviews(models.Model):
 
     def __str__(self):
         return self.author + '-' + self.content
-    
-class Likes(models.Model):
-    author = models.CharField(max_length=100, null=False)
-    article = models.CharField(max_length=100, null=False)
-    time = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name_plural = 'Likes'
-
-    def __str__(self):
-        return '{author} liked {article} at {time}'
-    
-class Dislikes(models.Model):
-    author = models.CharField(max_length=100, null=False)
-    article = models.CharField(max_length=100, null=False)
-    time = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name_plural = 'Likes'
-
-    def __str__(self):
-        return '{author} disliked {article} at {time}'

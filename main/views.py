@@ -9,15 +9,14 @@ from django.contrib.auth import authenticate, login
 
 from Insight import settings
 from main.forms import ArticleForm, SignupForm, UserLoginForm
-from main.models import ArticleViews, Articles, Users
+from main.models import ArticleDislikes, ArticleSaves, ArticleViews, Articles, ArticleComments, ArticleLikes, Users
 
 
 # Create your views here.
 def index(request):
     articles = Articles.objects.extra(select={'profile_name': 'SELECT profile FROM main_users WHERE username = author', 'author_id':'SELECT id from main_users WHERE username = author'})
-    
     context = {
-        'data': articles,
+        'articles': articles,
         'MEDIA_URL': settings.MEDIA_URL
     }
 
@@ -155,13 +154,70 @@ def update_view_count(request):
 
     return JsonResponse({"status": "Success", "viewcount": viewcount})
 
+@csrf_exempt
+def update_like_count(request):
+    body_unicode = request.body.decode('utf-8')
+    data = json.loads(body_unicode)
+    author = data.get('author')
+    articleid =int(data.get('articleId'))
+    article = Articles.objects.get(id = articleid)
+
+    like = ArticleLikes()
+    like.author = author
+    like.article_id = article
+    like.save()
+    
+    likecount = ArticleLikes.objects.filter(article_id = article).count()
+
+    return JsonResponse({"status": 'success', 'likecount': likecount})
+
+@csrf_exempt
+def update_dislike_count(request):
+    return None
+
+@csrf_exempt
+def update_comment_count(request):
+    return None
+
+@csrf_exempt
+def update_save_count(request):
+    return None
+
 def single_article(request, article_id):
     article = get_object_or_404(Articles, id=article_id)
     author = Users.objects.get(username = article.author)
 
+    views_count = ArticleViews.objects.filter(article_id = article.id).count()
+    viewed = ArticleViews.objects.filter(article_id = article.id, author = request.user.username).exists()
+
+    commetnt_count = ArticleComments.objects.filter(article_id = article.id).count()
+    commented = ArticleComments.objects.filter(article_id = article.id, author = request.user.username).exists()
+
+    like_count = ArticleLikes.objects.filter(article_id = article.id).count()
+    dislike_count = ArticleDislikes.objects.filter(article_id = article.id).count()
+    liked = ArticleLikes.objects.filter(article_id = article.id, author = request.user.id).exists()
+    disliked = ArticleDislikes.objects.filter(article_id = article.id, author = request.user.id).exists()
+
+    save_count = ArticleSaves.objects.filter(article_id = article.id).count()
+    saved = ArticleSaves.objects.filter(article_id = article.id, author = request.user.id).exists()
+
+    reactions = {
+        'viewed': viewed,
+        'views': views_count,
+        'likes': like_count,
+        'liked': liked,
+        'dislikes': dislike_count,
+        'disliked': disliked,
+        'comments': commetnt_count,
+        'commented': commented,
+        'saves': save_count,
+        'saved': saved,
+    }
+
     context = {
         'author': author,
         'article': article,
+        'reactions':reactions,
         'MEDIA_URL': settings.MEDIA_URL,
     }
 
