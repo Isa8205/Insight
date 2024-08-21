@@ -173,7 +173,20 @@ def update_like_count(request):
 
 @csrf_exempt
 def update_dislike_count(request):
-    return None
+    body_unicode = request.body.decode('utf-8')
+    data = json.loads(body_unicode)
+    author = data.get('author')
+    articleid =int(data.get('articleId'))
+    article = Articles.objects.get(id = articleid)
+
+    dislike = ArticleDislikes()
+    dislike.author = author
+    dislike.article_id = article
+    dislike.save()
+    
+    dislikecount = ArticleDislikes.objects.filter(article_id = article).count()
+
+    return JsonResponse({"status": 'success', 'dislikecount': dislikecount})
 
 @csrf_exempt
 def update_comment_count(request):
@@ -181,7 +194,20 @@ def update_comment_count(request):
 
 @csrf_exempt
 def update_save_count(request):
-    return None
+    body_unicode = request.body.decode('utf-8')
+    data = json.loads(body_unicode)
+    author = data.get('author')
+    articleid =int(data.get('articleId'))
+    article = Articles.objects.get(id = articleid)
+
+    bookmark = ArticleSaves()
+    bookmark.author = Users.objects.get(username = author)
+    bookmark.article_id = article
+    bookmark.save()
+    
+    dislikecount = ArticleSaves.objects.filter(article_id = article.id).count()
+
+    return JsonResponse({"status": 'success', 'dislikecount': dislikecount})
 
 def single_article(request, article_id):
     article = get_object_or_404(Articles, id=article_id)
