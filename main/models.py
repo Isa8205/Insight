@@ -55,7 +55,7 @@ class ArticleViews(models.Model):
 
 
 class ArticleComments(models.Model):
-    author = models.CharField(max_length=100, null=False)
+    author = models.ForeignKey(Users, on_delete=models.PROTECT)
     content = models.TextField(null=False)
     article_id = models.ForeignKey(Articles, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)

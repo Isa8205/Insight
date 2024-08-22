@@ -2,11 +2,16 @@
 <html lang="en">
 <head>
     {% load static %}
+    {% load tz%}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             background-color: #001220;
             font-family: sans-serif;
@@ -216,7 +221,7 @@
                     </li>
                     <li title="Comments" id="comments">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-square" id="comment-icon"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                        <span id="commentcount">{{ reactions.comments }}</span>
+                        <span id="commentcount">{{ reactions.comment_count }}</span>
                     </li>
                     <li title="Views" id="views">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye" id="view-icon"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
@@ -243,20 +248,34 @@
                 position: relative;
                 height: 30em;
                 width: 30em;
-                background-color: #ffffff;
+                background-color: #000000;
+                color: white;
                 border-radius: 10px;
                 position: fixed;
-                display: flex;
+                display: none;
                 flex-direction: column;
                 place-items: center;
             }
 
             .commentscontainer > ul {
-                padding: 0;
-                margin: 0;
+                width: 100%;
+                margin-block-end: 2em;
+                padding: .5em;
                 display: flex;
+                gap: .5em;
                 flex-direction: column;
                 overflow-y: scroll;
+            }
+
+            .commentscontainer > ul::-webkit-scrollbar {
+                border-radius: 5px;
+                width: .5em;
+                background-color: rgb(255, 255, 255);
+            }
+
+            .commentscontainer > ul::-webkit-scrollbar-thumb {
+                background-color: #3e4144;
+                border-radius: 5px;
             }
 
             .commentscontainer ul li {
@@ -288,9 +307,9 @@
             .commentscontainer > .comment-message {
                 position: absolute;
                 bottom: 0;
-                left: 3px;
-                right: 3px;
-                padding-inline: 1em;
+                right: 0;
+                left: 0;
+                height: 2em;
                 width: 100%;
                 display: flex;
                 align-items: center;
@@ -299,37 +318,51 @@
             }
 
             .commentscontainer > .comment-message > #comment {
-                padding: 2px;
-                flex: 5fr;
+                flex-grow: 1;
+                padding: 4px;
                 height: 1.8em;
-                margin: 0;
                 border: none;
+            }
+
+            .commentscontainer > .comment-message > #comment:focus {
+                border: none;
+                outline: none;
             }
 
             .commentscontainer > .comment-message > #sendcomment {
-                flex: 1fr;
+                cursor: pointer;
+                float: right;
+                width: auto;
+                height: 100%;
                 border: none;
-                background: rgb(255, 255, 255);
+                background: rgb(53, 52, 52);
+            }
+
+            .commentscontainer > .comment-message > #sendcomment:hover > svg {
+                stroke: chocolate;
             }
         </style>
 
-        <div class="commentscontainer">
+        <div class="commentscontainer" id="commentscontainer">
             <h3>Comments</h3>
             <ul class="commentlist">
+                {% for comment in reactions.comments %}
                 <li class="comment">
                     <header>
-                        <img src="/media/profiles/car1.jpg" alt="" class="comment-profile">
+                        <a href="{% url 'user_account' comment.author.id %}"><img src="{{ MEDIA_URL }}{{ comment.author.profile }}" alt="" class="comment-profile"></a>
                         <div class="details">
-                            <span class="name">Isa101</span><br>
-                            <span class="time">3 Weeks ago</span>
+                            <span class="name">{{ comment.author.username }}</span><br>
+                            <span class="date">{{ comment.created_at|timesince }} ago</span>
                         </div>
                     </header>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda nesciunt dolore minus corrupti error! Nulla hic blanditiis aperiam obcaecati perferendis?</p>
+                    <hr>
+                    <p>{{ comment.content }}</p>
                 </li>
+                {% endfor %}
             </ul>
             <div class="comment-message">
                 <input type="text" name="comment" id="comment" placeholder="Write a comment">
-                <button id="sendcomment"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send-horizontal"><path d="m3 3 3 9-3 9 19-9Z"/><path d="M6 12h16"/></svg></button>
+                <button id="sendcomment"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send-horizontal"><path d="m3 3 3 9-3 9 19-9Z"/><path d="M6 12h16"/></svg></button>
             </div>
         </div>
     
@@ -343,7 +376,7 @@
                 <img src="{{ MEDIA_URL }}{{ author.profile }}" alt="profile">
                 <div class="info">
                     <b>{{ article.author }}</b><br>
-                    <i>{{ article.created_at }}</i>
+                    <i>{{ article.created_at|timesince }} ago</i>
                 </div>
             </div>
     
@@ -510,11 +543,92 @@
                     console.error(err)
                 })
 
-            })   
+            }) 
+            
+            //Functionality for the display of the comments and addition of new ones
+            const commentBtn = document.getElementById('comments')
+            const commentContainer = document.getElementById('commentscontainer')
+
+            commentBtn.addEventListener('click', function() {
+                commentContainer.style.display = commentContainer.style.display === "flex" ? 'none' : 'flex'
+            })
+
+            const commentinput = document.getElementById('comment')
+            const sendcomment = document.getElementById('sendcomment')
+
+            sendcomment.addEventListener('click', () => {
+                const inputval = commentinput.value
+                data.content = inputval
+
+                fetch("{% url 'article_comment_count' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "X-CSRFToken": "{{ csrf_token }}"
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    document.getElementById('commentcount').textContent = data.commentcount
+                    commentinput.value = ''
+                })
+                .catch(err => {
+                    console.error('Error submiting comment:', err)
+                })
+            })
             
         })
 
         
     </script>
+
+    <script>
+        function calculateDynamicDuration(givenTime) {
+            // Function to calculate and update the duration every second
+            const interval = setInterval(() => {
+                const currentTime = new Date();
+                const pastTime = new Date(givenTime);
+
+                // Calculate the difference in milliseconds
+                let differenceInMs = currentTime - pastTime;
+
+                // Constants for time units
+                const msPerMinute = 60 * 1000;
+                const msPerHour = 60 * msPerMinute;
+                const msPerDay = 24 * msPerHour;
+                const msPerWeek = 7 * msPerDay;
+                const msPerMonth = 30.44 * msPerDay; // Average month length
+                const msPerYear = 365.25 * msPerDay; // Account for leap years
+
+                let displayText = "";
+
+                if (differenceInMs >= msPerYear) {
+                    const years = Math.floor(differenceInMs / msPerYear);
+                    displayText = `${years} year${years > 1 ? 's' : ''} ago`;
+                } else if (differenceInMs >= msPerMonth) {
+                    const months = Math.floor(differenceInMs / msPerMonth);
+                    displayText = `${months} month${months > 1 ? 's' : ''} ago`;
+                } else if (differenceInMs >= msPerWeek) {
+                    const weeks = Math.floor(differenceInMs / msPerWeek);
+                    displayText = `${weeks} week${weeks > 1 ? 's' : ''} ago`;
+                } else if (differenceInMs >= msPerDay) {
+                    const days = Math.floor(differenceInMs / msPerDay);
+                    displayText = `${days} day${days > 1 ? 's' : ''} ago`;
+                } else if (differenceInMs >= msPerHour) {
+                    const hours = Math.floor(differenceInMs / msPerHour);
+                    displayText = `${hours} hour${hours > 1 ? 's' : ''} ago`;
+                } else if (differenceInMs >= msPerMinute) {
+                    const minutes = Math.floor(differenceInMs / msPerMinute);
+                    displayText = `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+                } else {
+                    displayText = `Just now`;
+                }
+
+            }, 1000);
+        }
+    </script>
+
 </body>
 </html>

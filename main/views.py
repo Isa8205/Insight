@@ -213,8 +213,9 @@ def update_comment_count(request):
     if request.method == "POST":
         body_unicode = request.body.decode('utf-8')
         data = json.loads(body_unicode)
-        author = data.get('author')
-        article = Articles.objects.get(id = int(data.get('article')))
+        author = Users.objects.get(username = data.get('author'))
+        articleid = int(data.get('articleId'))
+        article = Articles.objects.get(id = articleid)
         content = data.get('content')
 
         comment = ArticleComments()
@@ -258,8 +259,9 @@ def single_article(request, article_id):
     views_count = ArticleViews.objects.filter(article_id = article.id).count()
     viewed = ArticleViews.objects.filter(article_id = article.id, author = request.user.username).exists()
 
+    comments = ArticleComments.objects.filter(article_id = article.id)
     commetnt_count = ArticleComments.objects.filter(article_id = article.id).count()
-    commented = ArticleComments.objects.filter(article_id = article.id, author = request.user.username).exists()
+    commented = ArticleComments.objects.filter(article_id = article.id, author = request.user.id).exists()
 
     like_count = ArticleLikes.objects.filter(article_id = article.id).count()
     dislike_count = ArticleDislikes.objects.filter(article_id = article.id).count()
@@ -276,7 +278,8 @@ def single_article(request, article_id):
         'liked': liked,
         'dislikes': dislike_count,
         'disliked': disliked,
-        'comments': commetnt_count,
+        'comments': comments,
+        'comment_count': commetnt_count,
         'commented': commented,
         'saves': save_count,
         'saved': saved,
