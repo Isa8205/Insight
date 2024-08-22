@@ -6,6 +6,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.db import connection
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 
 from Insight import settings
 from main.forms import ArticleForm, SignupForm, UserLoginForm
@@ -88,9 +89,15 @@ def user_login(request):
 
             if user is not None:
                 login(request, user)
+
+                next_url = request.GET.get('next')
+                if next_url:
+                    return redirect(next_url)
+                
                 return redirect('index')
             else:
                 err_msg = 'Authentication failed'
+                return render(request, 'login.html', {'message': err_msg})
         else:
             error = form.errors
             return render(request, 'login.html', {'message': err_msg, 'error': error})
@@ -137,7 +144,7 @@ def upload(request):
 
     return render(request, 'upload.html', {'form': ArticleForm()})
 
-@csrf_exempt
+@csrf_protect
 def update_view_count(request):
     body_unicode = request.body.decode('utf-8')
     data = json.loads(body_unicode)
@@ -154,7 +161,7 @@ def update_view_count(request):
 
     return JsonResponse({"status": "Success", "viewcount": viewcount})
 
-@csrf_exempt
+@csrf_protect
 def update_like_count(request):
     body_unicode = request.body.decode('utf-8')
     data = json.loads(body_unicode)
@@ -177,7 +184,7 @@ def update_like_count(request):
 
     return JsonResponse({"status": status, 'likecount': likecount})
 
-@csrf_exempt
+@csrf_protect
 def update_dislike_count(request):
     body_unicode = request.body.decode('utf-8')
     data = json.loads(body_unicode)
@@ -201,11 +208,26 @@ def update_dislike_count(request):
 
     return JsonResponse({"status": status, 'dislikecount': dislikecount})
 
-@csrf_exempt
+@csrf_protect
 def update_comment_count(request):
-    return None
+    if request.method == "POST":
+        body_unicode = request.body.decode('utf-8')
+        data = json.loads(body_unicode)
+        author = data.get('author')
+        article = Articles.objects.get(id = int(data.get('article')))
+        content = data.get('content')
 
-@csrf_exempt
+        comment = ArticleComments()
+        comment.author = author
+        comment.article_id = article
+        comment.content = content
+        comment.save()
+
+        comment_count = ArticleComments.objects.filter(article_id = article).count()
+
+        return JsonResponse({'status': 'Success', 'commentcount': comment_count})        
+
+@csrf_protect
 def update_save_count(request):
     body_unicode = request.body.decode('utf-8')
     data = json.loads(body_unicode)
@@ -224,10 +246,11 @@ def update_save_count(request):
         ArticleSaves.objects.filter(author = author, article_id = article).delete()
         status = 'Removed'
     
-    dislikecount = ArticleSaves.objects.filter(article_id = article).count()
+    savecount = ArticleSaves.objects.filter(article_id = article).count()
 
-    return JsonResponse({"status": status, 'dislikecount': dislikecount})
+    return JsonResponse({"status": status, 'savecount': savecount})
 
+@login_required
 def single_article(request, article_id):
     article = get_object_or_404(Articles, id=article_id)
     author = Users.objects.get(username = article.author)
