@@ -1,12 +1,13 @@
 import http
 import json
 import os
+import re
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
-from django.db import connection
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from Insight import settings
 from main.forms import ArticleForm, SignupForm, UserLoginForm
@@ -38,7 +39,6 @@ def signup(request):
                 with open(f'media/{new_image_name}', 'wb+') as destination:
                     for chunk in profile_image.chunks():
                         destination.write(chunk)
-                        
             else:
                 new_image_name = "profiles/avatar1.png"
 
@@ -46,40 +46,45 @@ def signup(request):
             user.profile = new_image_name
             user.save()
 
+            messages.success(request, f'Account created for {username}! You can now log in.')
+
             return redirect('login')
         
         else:
-            print(form.errors)
-            message = "Signup failed"
-
-            return render(request, 'signup.html', {'message': message, 'error': form.errors})
+            messages.error(request, 'Signup failed. Please check your input and try again.')
 
     else:
         form = SignupForm()
 
     return render(request, 'signup.html', {'form': form})
 
-@csrf_exempt
+
+@csrf_protect
 def check_username(request):
     body_unicode = request.body.decode('utf-8')
     data = json.loads(body_unicode)
     username = data.get('username')
 
-    user_exists = Users.objects.filter(username=username).exists()
+    if not re.match(r'^[\w\-.]+$', username):
+        response = {"status": "Invalid", "message": "Username can only contain letters, numbers, underscores, and hyphens."}
 
-    if user_exists:
-        response = {"status": "Unavailable","message": "Username already in use"}
+    elif not re.match(r'^(?!con$|prn$|aux$|nul$|com[1-9]$|lpt[1-9]$)[\w\-.]+$', username, re.IGNORECASE):
+
+        response = {"status": "Invalid", "message": "Such usernames are not allowed."}
     else:
-        response = {"status": "Available","message": "Username available"}
+        user_exists = Users.objects.filter(username=username).exists()
+
+        if user_exists:
+            response = {"status": "Unavailable", "message": "Username already in use."}
+        else:
+            response = {"status": "Available", "message": "Username available."}
 
     return JsonResponse(response)
 
-
 @csrf_protect
 def user_login(request):
-    err_msg = None
     if request.method == 'POST':
-        form = UserLoginForm(request, data=request.POST)      
+        form = UserLoginForm(request, data=request.POST)
 
         if form.is_valid():
             username = form.cleaned_data.get('username')
@@ -87,8 +92,11 @@ def user_login(request):
 
             user = authenticate(request, username=username, password=password)
 
-            if user is not None:
+            if user:
                 login(request, user)
+                
+                # Success message after login
+                messages.success(request, f'Welcome, {username}! You have successfully logged in.')
 
                 next_url = request.GET.get('next')
                 if next_url:
@@ -96,17 +104,17 @@ def user_login(request):
                 
                 return redirect('index')
             else:
-                err_msg = 'Authentication failed'
-                return render(request, 'login.html', {'message': err_msg})
+                # Error message for authentication failure
+                messages.error(request, 'Invalid username or password. Please try again.')
         else:
-            error = form.errors
-            return render(request, 'login.html', {'message': err_msg, 'error': error})
+            # Error message for form validation failure
+            messages.error(request, 'Invalid username or password. Please try again.')
 
     else:
         form = UserLoginForm()
 
-    
-    return render(request, 'login.html', {'form':form, 'msg':err_msg})
+    return render(request, 'login.html', {'form': form})
+
 
 
 

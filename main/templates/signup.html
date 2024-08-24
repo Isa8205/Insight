@@ -195,6 +195,57 @@
             
         }
     </style>
+
+    <style>
+        ul.messages {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.messages li.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        ul.messages li.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        ul.messages li.warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        ul.messages li.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        ul.messages li {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            display: block;
+        }
+
+    </style>
 </head>
 <body>
     <form action="" method="post" enctype="multipart/form-data">
@@ -206,13 +257,13 @@
                 <button id="addbtn" type="button">Add</button>
             </div>
         </div>
-        {% if message %}
-        <div class="error-msg">
-            <img src="{% static 'images/icons/circle-alert.svg' %}" alt=""><span>{{ message }}</span>
-        </div>
-        <div class="errors">
-            {{ error }}
-        </div>
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
         {% endif %}
 
         <div class="group">
@@ -319,7 +370,7 @@
 
                         // Remove image and reset input on Remove button click
                         removeBtn.addEventListener('click', function() {
-                            previewImg.src = "{% static 'images/avatar1.png' %}";
+                            previewImg.src = "/media/profiles/avatar1.png";
                             imageInput.value = '';
                             addbtn.textContent = "Add";
                             profileBtnContainer.removeChild(removeBtn);
@@ -351,7 +402,8 @@
                     fetch('{% url "check_username" %}', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
                         },
                         body: JSON.stringify({ username: usernameVal })
                     })
@@ -378,7 +430,7 @@
             }
         
             // Attach the debounce function to the input event
-            usernameInput.addEventListener('input', debounce(checkUsername, 500));
+            usernameInput.addEventListener('blur', debounce(checkUsername, 500));
         });
         
         document.addEventListener('DOMContentLoaded', function() {

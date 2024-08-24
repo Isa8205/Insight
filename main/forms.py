@@ -1,3 +1,4 @@
+import re
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -18,10 +19,19 @@ class SignupForm(UserCreationForm):
         if commit:
             user.save()
         return user
+    
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+
+        # Define the pattern for invalid characters (allow letters, numbers, underscores, and dashes)
+        if not re.match(r'^[\w-]+$', username):
+            raise forms.ValidationError("Username contains invalid characters. Only letters, numbers, underscores, and dashes are allowed.")
+        
+        return username
 
         
 class UserLoginForm(AuthenticationForm):
-    username = forms.CharField(required=True)
+    username = forms.CharField(max_length=20, required=True)
     password = forms.CharField(widget=forms.PasswordInput, required=True)
 
 class ArticleForm(forms.ModelForm):
