@@ -15,7 +15,7 @@ from main.models import ArticleDislikes, ArticleSaves, ArticleViews, Articles, A
 
 # Create your views here.
 def index(request):
-    articles = Articles.objects.extra(select={'profile_name': 'SELECT profile FROM main_users WHERE username = author', 'author_id':'SELECT id from main_users WHERE username = author'})
+    articles = Articles.objects.all()
     context = {
         'articles': articles,
         'MEDIA_URL': settings.MEDIA_URL
@@ -114,6 +114,7 @@ def logout(request):
     request.session.flush()
     return redirect('index')
 
+@login_required
 @csrf_protect
 def upload(request):
     if request.method == 'POST':
@@ -130,7 +131,7 @@ def upload(request):
                     destination.write(chunk)
                     
             article = form.save(commit=False)
-            author_name = request.user.username
+            author_name = Users.objects.get(username = request.user.username)
             article.author = author_name
             article.cover_image = new_cover_img_name
             article.save()
@@ -254,7 +255,6 @@ def update_save_count(request):
 @login_required
 def single_article(request, article_id):
     article = get_object_or_404(Articles, id=article_id)
-    author = Users.objects.get(username = article.author)
 
     views_count = ArticleViews.objects.filter(article_id = article.id).count()
     viewed = ArticleViews.objects.filter(article_id = article.id, author = request.user.username).exists()
@@ -286,7 +286,6 @@ def single_article(request, article_id):
     }
 
     context = {
-        'author': author,
         'article': article,
         'reactions':reactions,
         'MEDIA_URL': settings.MEDIA_URL,

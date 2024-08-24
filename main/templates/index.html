@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load tz %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home | InSight</title>
@@ -47,6 +48,10 @@
             width: 50px;
             border-radius: 50%;
             object-fit: cover;
+        }
+
+        .top .profile-info > .date {
+            font-size: clamp(.5em, .7em, 2em);
         }
 
         .content-body .hashtags {
@@ -397,10 +402,10 @@
                     <div class="card-body">
         
                         <div class="top">
-                            <a href="{% url 'user_account' article.author_id %}"><img src="{{ MEDIA_URL }}{{ article.profile_name }}" alt="{{ article.author }}"></a>
+                            <a href="{% url 'user_account' article.author.id %}"><img src="{{ MEDIA_URL }}{{ article.author.profile }}" alt="{{ article.author }}"></a>
                             <div class="profile-info">
-                                <p><b>{{ article.author }}</b></p>
-                                <i class="date">{{ article.created_at }}</i>      
+                                <p><b>{{ article.author.username }}</b></p>
+                                <i class="date">{{ article.created_at|timesince }} ago</i>      
                             </div>
                         </div>
             
@@ -517,20 +522,6 @@
             })
         })
     </script>
-    
 
-{#    <script src="{% static 'js/main.js' %}"></script>#}
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-
-            const dates = document.querySelectorAll('.date')
-            dates.forEach(function(date) {
-                const x = date.textContent
-                const y = x.split(',')
-                const z = y[0].split(' ')
-                date.textContent = z[1] + ', ' + z[0] + ', ' + y[1]                
-            })
-        })
-    </script>
 </body>
 </html>

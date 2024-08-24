@@ -373,9 +373,9 @@
             </div>
 
             <div class="author">
-                <img src="{{ MEDIA_URL }}{{ author.profile }}" alt="profile">
+                <img src="{{ MEDIA_URL }}{{ article.author.profile }}" alt="profile">
                 <div class="info">
-                    <b>{{ article.author }}</b><br>
+                    <b>{{ article.author.username }}</b><br>
                     <i>{{ article.created_at|timesince }} ago</i>
                 </div>
             </div>
@@ -416,6 +416,11 @@
             const author = "{{ user.username }}" ? "{{user.username}}" : 'Guest'
             const data = {articleId: articleId, author: author}
 
+
+            //The states of the reactions
+            let liked_state = '{{ reactions.liked }}'
+            let disliked_state = "{{ reactions.disliked }}"
+
             //Handling of the view functionality
             const view_state = "{{ reactions.viewed }}"
 
@@ -440,7 +445,6 @@
 
             //Handling of the like functionality
             const likeBtn = document.getElementById('likes')
-            let liked_state = '{{ reactions.liked }}'
 
             likeBtn.addEventListener('click', function() {
 
@@ -472,13 +476,14 @@
                 .catch(err => {
                     console.log(err)
                 })
+
+                disliked_state === "True" ? dislikeBtn.click() : null
             })
 
             //Fucntionality for the dislikes
             const dislikeBtn = document.getElementById('dislikes')
             const dislikecount = document.getElementById('dislikecount')
             const dislikeIcon = document.getElementById('dislike-icon')
-            let disliked_state = "{{ reactions.disliked }}"
 
             dislikeBtn.addEventListener('click', function() {
                 data.action = disliked_state === 'True' ? 'Remove' : 'Add'
@@ -506,6 +511,8 @@
                 .catch(err => {
                     console.error(err)
                 })
+                
+                liked_state === "True" ? likeBtn.click() : null
 
             })
 

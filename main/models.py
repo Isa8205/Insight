@@ -28,9 +28,11 @@ class Users(AbstractUser):
             today = date.today()
             return today.year - self.date_of_birth.year - ((today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day))
         return None
+    
+
 
 class Articles(models.Model):
-    author = models.CharField(max_length=100, null=False)
+    author = models.ForeignKey(Users, on_delete=models.PROTECT, related_name='articles')
     title = models.CharField(max_length=100, null=False)
     content = models.TextField(null=False)
     published = models.BooleanField(default=False)
@@ -41,6 +43,10 @@ class Articles(models.Model):
 
     class Meta:
         verbose_name_plural = "Articles"
+
+    @property
+    def profile(self):
+        return self.author.profile
 
     def __str__(self):
         return self.author + " - " + self.title

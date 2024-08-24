@@ -3,413 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tests</title>
-
-    <style>
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            row-gap: 10px;
-            column-gap: 15px;
-        }
-
-        .card {
-            color: white;
-            border-radius: 10px;
-        }
-
-        .card-body {
-            background-color: rgba(0, 0, 0, 0.795);
-            border-radius: 10px;
-            padding: 10px;
-        }
-
-        .top {
-            display:  flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-block: 10px;
-        }
-
-        .top img {
-            height: 50px;
-            width: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .content-body .hashtags {
-            color: #34B3F1;
-        }
-
-        .content-body .hashtags ul {
-            margin: 0;
-            padding-block: 5px;
-            padding-inline: 10px;
-            list-style: none;
-            display: flex;
-            align-items: center;
-            justify-content: start;
-        }
-
-        .content-body .hashtags ul li {
-            background-color: rgba(0, 0, 0, 0.425);
-            padding-block: 4px;
-            padding-inline: 2px;
-            border-radius: 5px;
-            margin-inline: 5px;
-            cursor: pointer;
-        }
-
-        .content-body .hashtags ul li:hover {
-            color: #2b95ca;
-        }
-
-        .cover-img {
-            width: 100%;
-            height: 10em;
-        }
-
-        .cover-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-
-        .action-btn {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding-block: 15px;
-            padding-inline: 20px;
-        }
-    </style>
+    <title>Document</title>
 </head>
 <body>
-    <div class="grid">
-        <div class="card">
-
-            <div class="card-body">
-
-                <div class="top">
-                    <img src="{{ MEDIA_URL }}{{ article.profile_name }}" alt="{{ article.author }}">
-                    <div class="profile-info">
-                        <p><b>{{ article.author }}</b></p>
-                        <i>{{ article.created_at }}</i>      
-                    </div>
+    <!-- Hidden base template for comment -->
+    <template id="comment-template">
+        <li class="comment">
+            <header>
+                <a href="#"><img src="" alt="" class="comment-profile"></a>
+                <div class="details">
+                    <span class="name"></span><br>
+                    <span class="date"></span>
                 </div>
-    
-                <div class="content-body">
-                    <p class="title">{{ article.title }}</p>
-                    <div class="hashtags">
-                        <ul>
-                            <li>@technology</li>
-                            <li>@revolution</li>
-                            <li>@future</li>
-                            <li>@innovation</li>
-                        </ul>
-                    </div>
-                </div>
-    
-                <div class="cover-img">
-                    <img src="{{ MEDIA_URL }}{{ article.cover_image }}" alt="cover image">
-                </div>
-    
-                <div class="action-btn">
-                    <a href="{% url 'page'  article.id %}"><button class="btn">Read Article</button></a>
-                </div>
+            </header>
+            <hr>
+            <p></p>
+        </li>
+    </template>
 
-            </div>
+    <!-- Container for rendered comments -->
+    <ul id="comments-container">
+        <!-- Rendered comments will be appended here -->
+    </ul>
+    <button onclick="renderComments(comments)">Add</button>
 
-        </div>
-        <div class="card">
+    <script>
+        // Function to render comments
+        function renderComments(comments) {
+            const template = document.getElementById('comment-template').content;
+            const container = document.getElementById('comments-container');
 
-            <div class="card-body">
+            // Clear existing comments (optional)
+            container.innerHTML = '';
 
-                <div class="top">
-                    <img src="{{ MEDIA_URL }}{{ article.profile_name }}" alt="{{ article.author }}">
-                    <div class="profile-info">
-                        <p><b>{{ article.author }}</b></p>
-                        <i>{{ article.created_at }}</i>      
-                    </div>
-                </div>
-    
-                <div class="content-body">
-                    <p class="title">{{ article.title }}</p>
-                    <div class="hashtags">
-                        <ul>
-                            <li>@technology</li>
-                            <li>@revolution</li>
-                            <li>@future</li>
-                            <li>@innovation</li>
-                        </ul>
-                    </div>
-                </div>
-    
-                <div class="cover-img">
-                    <img src="{{ MEDIA_URL }}{{ article.cover_image }}" alt="cover image">
-                </div>
-    
-                <div class="action-btn">
-                    <a href="{% url 'page'  article.id %}"><button class="btn">Read Article</button></a>
-                </div>
+            comments.forEach(comment => {
+                // Clone the template
+                const clone = document.importNode(template, true);
 
-            </div>
+                // Modify the clone's contents
+                const anchor = clone.querySelector('a');
+                const img = clone.querySelector('img');
+                const nameSpan = clone.querySelector('.name');
+                const dateSpan = clone.querySelector('.date');
+                const p = clone.querySelector('p');
 
-        </div>
+                anchor.href = `/user_account/${comment.author.id}`;
+                img.src = `${comment.author.profile}`;
+                nameSpan.textContent = comment.author.username;
+                dateSpan.textContent = `${comment.created_at} ago`; // Format as needed
+                p.textContent = comment.content;
 
-        <div class="card">
+                // Append the clone to the container
+                container.appendChild(clone);
+            });
+        }
 
-            <div class="card-body">
+        // Example data (this would typically come from an API)
+        const comments = [
+            {
+                author: { id: 1, profile: 'profile1.jpg', username: 'user1' },
+                created_at: '3 hours', // Use a proper date formatter if needed
+                content: 'This is a comment.'
+            },
+            {
+                author: { id: 2, profile: 'profile2.jpg', username: 'user2' },
+                created_at: '1 day',
+                content: 'Another comment.'
+            }
+        ];
+    </script>
 
-                <div class="top">
-                    <img src="{{ MEDIA_URL }}{{ article.profile_name }}" alt="{{ article.author }}">
-                    <div class="profile-info">
-                        <p><b>{{ article.author }}</b></p>
-                        <i>{{ article.created_at }}</i>      
-                    </div>
-                </div>
-    
-                <div class="content-body">
-                    <p class="title">{{ article.title }}</p>
-                    <div class="hashtags">
-                        <ul>
-                            <li>@technology</li>
-                            <li>@revolution</li>
-                            <li>@future</li>
-                            <li>@innovation</li>
-                        </ul>
-                    </div>
-                </div>
-    
-                <div class="cover-img">
-                    <img src="{{ MEDIA_URL }}{{ article.cover_image }}" alt="cover image">
-                </div>
-    
-                <div class="action-btn">
-                    <a href="{% url 'page'  article.id %}"><button class="btn">Read Article</button></a>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="card">
-
-            <div class="card-body">
-
-                <div class="top">
-                    <img src="{{ MEDIA_URL }}{{ article.profile_name }}" alt="{{ article.author }}">
-                    <div class="profile-info">
-                        <p><b>{{ article.author }}</b></p>
-                        <i>{{ article.created_at }}</i>      
-                    </div>
-                </div>
-    
-                <div class="content-body">
-                    <p class="title">{{ article.title }}</p>
-                    <div class="hashtags">
-                        <ul>
-                            <li>@technology</li>
-                            <li>@revolution</li>
-                            <li>@future</li>
-                            <li>@innovation</li>
-                        </ul>
-                    </div>
-                </div>
-    
-                <div class="cover-img">
-                    <img src="{{ MEDIA_URL }}{{ article.cover_image }}" alt="cover image">
-                </div>
-    
-                <div class="action-btn">
-                    <a href="{% url 'page'  article.id %}"><button class="btn">Read Article</button></a>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="card">
-
-            <div class="card-body">
-
-                <div class="top">
-                    <img src="{{ MEDIA_URL }}{{ article.profile_name }}" alt="{{ article.author }}">
-                    <div class="profile-info">
-                        <p><b>{{ article.author }}</b></p>
-                        <i>{{ article.created_at }}</i>      
-                    </div>
-                </div>
-    
-                <div class="content-body">
-                    <p class="title">{{ article.title }}</p>
-                    <div class="hashtags">
-                        <ul>
-                            <li>@technology</li>
-                            <li>@revolution</li>
-                            <li>@future</li>
-                            <li>@innovation</li>
-                        </ul>
-                    </div>
-                </div>
-    
-                <div class="cover-img">
-                    <img src="{{ MEDIA_URL }}{{ article.cover_image }}" alt="cover image">
-                </div>
-    
-                <div class="action-btn">
-                    <a href="{% url 'page'  article.id %}"><button class="btn">Read Article</button></a>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="card">
-
-            <div class="card-body">
-
-                <div class="top">
-                    <img src="{{ MEDIA_URL }}{{ article.profile_name }}" alt="{{ article.author }}">
-                    <div class="profile-info">
-                        <p><b>{{ article.author }}</b></p>
-                        <i>{{ article.created_at }}</i>      
-                    </div>
-                </div>
-    
-                <div class="content-body">
-                    <p class="title">{{ article.title }}</p>
-                    <div class="hashtags">
-                        <ul>
-                            <li>@technology</li>
-                            <li>@revolution</li>
-                            <li>@future</li>
-                            <li>@innovation</li>
-                        </ul>
-                    </div>
-                </div>
-    
-                <div class="cover-img">
-                    <img src="{{ MEDIA_URL }}{{ article.cover_image }}" alt="cover image">
-                </div>
-    
-                <div class="action-btn">
-                    <a href="{% url 'page'  article.id %}"><button class="btn">Read Article</button></a>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="card">
-
-            <div class="card-body">
-
-                <div class="top">
-                    <img src="{{ MEDIA_URL }}{{ article.profile_name }}" alt="{{ article.author }}">
-                    <div class="profile-info">
-                        <p><b>{{ article.author }}</b></p>
-                        <i>{{ article.created_at }}</i>      
-                    </div>
-                </div>
-    
-                <div class="content-body">
-                    <p class="title">{{ article.title }}</p>
-                    <div class="hashtags">
-                        <ul>
-                            <li>@technology</li>
-                            <li>@revolution</li>
-                            <li>@future</li>
-                            <li>@innovation</li>
-                        </ul>
-                    </div>
-                </div>
-    
-                <div class="cover-img">
-                    <img src="{{ MEDIA_URL }}{{ article.cover_image }}" alt="cover image">
-                </div>
-    
-                <div class="action-btn">
-                    <a href="{% url 'page'  article.id %}"><button class="btn">Read Article</button></a>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="card">
-
-            <div class="card-body">
-
-                <div class="top">
-                    <img src="{{ MEDIA_URL }}{{ article.profile_name }}" alt="{{ article.author }}">
-                    <div class="profile-info">
-                        <p><b>{{ article.author }}</b></p>
-                        <i>{{ article.created_at }}</i>      
-                    </div>
-                </div>
-    
-                <div class="content-body">
-                    <p class="title">{{ article.title }}</p>
-                    <div class="hashtags">
-                        <ul>
-                            <li>@technology</li>
-                            <li>@revolution</li>
-                            <li>@future</li>
-                            <li>@innovation</li>
-                        </ul>
-                    </div>
-                </div>
-    
-                <div class="cover-img">
-                    <img src="{{ MEDIA_URL }}{{ article.cover_image }}" alt="cover image">
-                </div>
-    
-                <div class="action-btn">
-                    <a href="{% url 'page'  article.id %}"><button class="btn">Read Article</button></a>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="card">
-
-            <div class="card-body">
-
-                <div class="top">
-                    <img src="{{ MEDIA_URL }}{{ article.profile_name }}" alt="{{ article.author }}">
-                    <div class="profile-info">
-                        <p><b>{{ article.author }}</b></p>
-                        <i>{{ article.created_at }}</i>      
-                    </div>
-                </div>
-    
-                <div class="content-body">
-                    <p class="title">{{ article.title }}</p>
-                    <div class="hashtags">
-                        <ul>
-                            <li>@technology</li>
-                            <li>@revolution</li>
-                            <li>@future</li>
-                            <li>@innovation</li>
-                        </ul>
-                    </div>
-                </div>
-    
-                <div class="cover-img">
-                    <img src="{{ MEDIA_URL }}{{ article.cover_image }}" alt="cover image">
-                </div>
-    
-                <div class="action-btn">
-                    <a href="{% url 'page'  article.id %}"><button class="btn">Read Article</button></a>
-                </div>
-
-            </div>
-
-        </div>
-    </div>
 </body>
 </html>
