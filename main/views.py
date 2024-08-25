@@ -157,8 +157,8 @@ def upload(request):
 def update_view_count(request):
     body_unicode = request.body.decode('utf-8')
     data = json.loads(body_unicode)
-    author = data.get('author')
     articleid =int(data.get('articleId'))
+    author = Users.objects.get(username = data.get('author'))
     article = Articles.objects.get(id = articleid)
 
     view = ArticleViews()
@@ -174,7 +174,7 @@ def update_view_count(request):
 def update_like_count(request):
     body_unicode = request.body.decode('utf-8')
     data = json.loads(body_unicode)
-    author = data.get('author')
+    author = Users.objects.get(username = data.get('author'))
     articleid =int(data.get('articleId'))
     action = data.get('action')
     article = Articles.objects.get(id = articleid)
@@ -182,7 +182,7 @@ def update_like_count(request):
     if action == 'Add':
         like = ArticleLikes()
         like.author = author
-        like.article_id = article
+        like.article = article
         like.save()
         status = 'Added'
     else:
@@ -197,7 +197,7 @@ def update_like_count(request):
 def update_dislike_count(request):
     body_unicode = request.body.decode('utf-8')
     data = json.loads(body_unicode)
-    author = data.get('author')
+    author = Users.objects.get(username = data.get('author'))
     articleid =int(data.get('articleId'))
     action = data.get('action')
     article = Articles.objects.get(id = articleid)
@@ -206,7 +206,7 @@ def update_dislike_count(request):
     if action == 'Add':
         dislike = ArticleDislikes()
         dislike.author = author
-        dislike.article_id = article
+        dislike.article = article
         dislike.save()
         status = 'Added'
     else:
@@ -229,7 +229,7 @@ def update_comment_count(request):
 
         comment = ArticleComments()
         comment.author = author
-        comment.article_id = article
+        comment.article = article
         comment.content = content
         comment.save()
 
@@ -249,7 +249,7 @@ def update_save_count(request):
     if action == 'Add':
         bookmark = ArticleSaves()
         bookmark.author = author
-        bookmark.article_id = article
+        bookmark.article = article
         bookmark.save()
         status = 'Added'
     else:
@@ -264,32 +264,40 @@ def update_save_count(request):
 def single_article(request, article_id):
     article = get_object_or_404(Articles, id=article_id)
 
-    views_count = ArticleViews.objects.filter(article_id = article.id).count()
-    viewed = ArticleViews.objects.filter(article_id = article.id, author = request.user.username).exists()
+    views = ArticleViews.objects.filter(article_id = article)
+    view_count = ArticleViews.objects.filter(article_id = article.id).count()
+    viewed = ArticleViews.objects.filter(article_id = article.id, author = request.user.id).exists()
 
     comments = ArticleComments.objects.filter(article_id = article.id)
     commetnt_count = ArticleComments.objects.filter(article_id = article.id).count()
     commented = ArticleComments.objects.filter(article_id = article.id, author = request.user.id).exists()
 
+    likes = ArticleLikes.objects.filter(article_id = article)
+    dislikes = ArticleDislikes.objects.filter(article_id = article)
     like_count = ArticleLikes.objects.filter(article_id = article.id).count()
     dislike_count = ArticleDislikes.objects.filter(article_id = article.id).count()
-    liked = ArticleLikes.objects.filter(article_id = article.id, author = request.user.username).exists()
-    disliked = ArticleDislikes.objects.filter(article_id = article.id, author = request.user.username).exists()
+    liked = ArticleLikes.objects.filter(article_id = article.id, author = request.user.id).exists()
+    disliked = ArticleDislikes.objects.filter(article_id = article.id, author = request.user.id).exists()
 
+    saves = ArticleSaves.objects.filter(article_id = article)
     save_count = ArticleSaves.objects.filter(article_id = article.id).count()
     saved = ArticleSaves.objects.filter(article_id = article.id, author = request.user.id).exists()
 
     reactions = {
+        'views': views,
+        'view_count': view_count,
         'viewed': viewed,
-        'views': views_count,
-        'likes': like_count,
+        'likes': likes,
+        'like_count': like_count,
         'liked': liked,
-        'dislikes': dislike_count,
+        'dislikes': dislikes,
+        'dislike_count': dislike_count,
         'disliked': disliked,
         'comments': comments,
         'comment_count': commetnt_count,
         'commented': commented,
-        'saves': save_count,
+        'saves': saves,
+        'save_count': save_count,
         'saved': saved,
     }
 

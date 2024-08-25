@@ -49,10 +49,10 @@ class Articles(models.Model):
         return self.author.profile
 
     def __str__(self):
-        return self.author + " - " + self.title
+        return self.author.full_name + " - " + self.title
     
 class ArticleViews(models.Model):
-    author = models.CharField(max_length=100, null=False)
+    author = models.ForeignKey(Users, on_delete=models.PROTECT)
     article = models.ForeignKey(Articles, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -63,19 +63,19 @@ class ArticleViews(models.Model):
 class ArticleComments(models.Model):
     author = models.ForeignKey(Users, on_delete=models.PROTECT)
     content = models.TextField(null=False)
-    article_id = models.ForeignKey(Articles, on_delete=models.CASCADE)
+    article = models.ForeignKey(Articles, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name_plural = 'Comments'
 
     def __str__(self):
-        return self.author + '-' + self.content
+        return self.author.full_name + '-' + self.content
     
     
 class ArticleLikes(models.Model):
-    author = models.CharField(max_length=100, null=False)
-    article_id = models.ForeignKey(Articles, on_delete=models.CASCADE)
+    author = models.ForeignKey(Users, on_delete=models.PROTECT)
+    article = models.ForeignKey(Articles, on_delete=models.CASCADE)
     time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -85,8 +85,8 @@ class ArticleLikes(models.Model):
         return f'{self.author} liked {self.article} at {self.time}'
     
 class ArticleDislikes(models.Model):
-    author = models.CharField(max_length=100, null=False)
-    article_id = models.ForeignKey(Articles, on_delete=models.CASCADE)
+    author = models.ForeignKey(Users, on_delete=models.PROTECT)
+    article = models.ForeignKey(Articles, on_delete=models.CASCADE)
     time = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -96,14 +96,14 @@ class ArticleDislikes(models.Model):
         return '{author} disliked {article} at {time}'
     
 class ArticleSaves(models.Model):
-    author = models.ForeignKey(Users, on_delete=models.CASCADE)
-    article_id = models.ForeignKey(Articles, on_delete=models.CASCADE)
+    author = models.ForeignKey(Users, on_delete=models.PROTECT)
+    article = models.ForeignKey(Articles, on_delete=models.CASCADE)
     time = models.DateTimeField(auto_now_add=True)
     
 
 class SiteReviews(models.Model):
+    author = models.ForeignKey(Users, on_delete=models.PROTECT)
     content = models.TextField(null=False)
-    author = models.CharField(max_length=100, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
