@@ -1,0 +1,14 @@
+
+altgraph
+appdirs
+colorama
+pefile
+pyinstaller
+pyinstaller-hooks-contrib
+pypng
+pyserial
+python-escpos
+pyusb
+pywin32
+pywin32-ctypes
+qrcode
