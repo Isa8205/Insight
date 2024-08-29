@@ -672,92 +672,50 @@
             
         })
 
-        // Handling the display and of the various reaction-links
-        const reactionLinks = document.querySelectorAll('.reactionlink')
-        const reactionContainers = document.querySelectorAll('.reaction-container')
+        // Handling the display of the various reaction-links
+        const reactionLinks = document.querySelectorAll('.reactionlink');
+        const reactionContainers = document.querySelectorAll('.reaction-container');
+
+        let hideTimeout; // Declare the hideTimeout globally to manage timeouts
 
         reactionLinks.forEach((element, index) => {
+            // Show the corresponding reaction container on mouseover
             element.addEventListener('mouseover', function() {
+                // Cancel any hide timeouts if they exist
+                clearTimeout(hideTimeout);
 
-                for (i=0, i<reactionContainers.length; i++;) {
-                    reactionContainers[i].style.display = 'flex'
-                }
-
-                reactionContainers[index].style.display = 'flex'
-            })
-
-            element.addEventListener('mouseout', function() {
-                let hideTimeout;   
-    
-                document.addEventListener('mousemove', function(event) {
-                    const rect = reactionContainers[index].getBoundingClientRect();
-                    const x = event.clientX;
-                    const y = event.clientY;
-    
-                    if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
-                        clearTimeout(hideTimeout);
-                        reactionContainers[index].style.display = 'flex';
-                        console.log(x, y, rect.top, rect.bottom, rect.right, rect.left)
-                    } else {
-                        hideTimeout = setTimeout(() => {
-                            reactionContainers[index].style.display = 'none';
-                        }, 2000);
-                    }
+                // Hide all other reaction containers
+                reactionContainers.forEach(container => {
+                    container.style.display = 'none';
                 });
 
-            })
+                // Show the current reaction container
+                reactionContainers[index].style.display = 'flex';
+            });
 
-        })
+            // Handle mouseout on the trigger element
+            element.addEventListener('mouseout', function() {
+                const container = reactionContainers[index];
 
+                // Start a timeout to hide the container after a delay
+                hideTimeout = setTimeout(() => {
+                    container.style.display = 'none';
+                }, 2000);
+            });
+
+            // Ensure the container stays visible while the mouse is over it
+            reactionContainers[index].addEventListener('mouseover', function() {
+                clearTimeout(hideTimeout); // Prevent hiding while hovering over the container
+            });
+
+            // Hide the container when the mouse leaves it
+            reactionContainers[index].addEventListener('mouseout', function() {
+                hideTimeout = setTimeout(() => {
+                    reactionContainers[index].style.display = 'none';
+                }, 2000); // Delay to allow quick re-entry
+            });
+        });
         
-    </script>
-
-    <script>
-        function calculateDynamicDuration(givenTime) {
-            // Function to calculate and update the duration every second
-            const interval = setInterval(() => {
-                const currentTime = new Date();
-                const pastTime = new Date(givenTime);
-
-                // Calculate the difference in milliseconds
-                let differenceInMs = currentTime - pastTime;
-
-                // Constants for time units
-                const msPerMinute = 60 * 1000;
-                const msPerHour = 60 * msPerMinute;
-                const msPerDay = 24 * msPerHour;
-                const msPerWeek = 7 * msPerDay;
-                const msPerMonth = 30.44 * msPerDay; // Average month length
-                const msPerYear = 365.25 * msPerDay; // Account for leap years
-
-                let displayText = "";
-
-                if (differenceInMs >= msPerYear) {
-                    const years = Math.floor(differenceInMs / msPerYear);
-                    displayText = `${years} year${years > 1 ? 's' : ''} ago`;
-                } else if (differenceInMs >= msPerMonth) {
-                    const months = Math.floor(differenceInMs / msPerMonth);
-                    displayText = `${months} month${months > 1 ? 's' : ''} ago`;
-                } else if (differenceInMs >= msPerWeek) {
-                    const weeks = Math.floor(differenceInMs / msPerWeek);
-                    displayText = `${weeks} week${weeks > 1 ? 's' : ''} ago`;
-                } else if (differenceInMs >= msPerDay) {
-                    const days = Math.floor(differenceInMs / msPerDay);
-                    displayText = `${days} day${days > 1 ? 's' : ''} ago`;
-                } else if (differenceInMs >= msPerHour) {
-                    const hours = Math.floor(differenceInMs / msPerHour);
-                    displayText = `${hours} hour${hours > 1 ? 's' : ''} ago`;
-                } else if (differenceInMs >= msPerMinute) {
-                    const minutes = Math.floor(differenceInMs / msPerMinute);
-                    displayText = `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-                } else {
-                    displayText = `Just now`;
-                }
-
-                console.log(displayText)
-
-            }, 60000);
-        }
     </script>
 
 </body>
