@@ -72,32 +72,39 @@
         text-decoration: none;
     }
 
-    .cover-img {
-        position: relative;
+    .cover-img-load {
+        display: flex;
         margin-block: 1em;
         width: 100%;
         min-height: 7em;
-        display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        border: dotted chocolate;
-        border-radius: 5px;
+        border: 2px dashed chocolate;
+        border-radius: 10px;
+        cursor: pointer;
     }
 
-    .cover-img svg {
+    .cover-img-load svg {
         fill: none;
         stroke: chocolate;
+        stroke-width: 2px;
     }
 
-    .cover-img > img {
+    .cover-img-preview {
+        display: none;
         width: 100%;
-        height: 10em;
-        object-fit: cover;
+        min-height: 15em;
+        border-radius: 10px;
+        background: url(/media/profiles/car1.jpg);
+        background-size: cover;
+        background-position: center;
+        cursor: pointer;
+        position: relative;
     }
 
-    .cover-img > span {
-        backdrop-filter: blur(2px);
+
+    .cover-img-preview > span {
         position: absolute;
         top: 0;
         bottom: 0;
@@ -106,6 +113,14 @@
         display: none;
         justify-content: center;
         align-items: center;
+        border-radius: 10px;
+        backdrop-filter: blur(5px) brightness(60%);
+        transition: all 3s;
+
+    }
+
+    .cover-img-preview:hover > span {
+        display: flex;
     }
     </style>
 </head>
@@ -132,18 +147,25 @@
             <!-- Hidden input to store the Quill content -->
             <textarea name="content" id="content" style="display:none;"></textarea>
 
-            <label for="">Cover image &star;</label>
-            <div class="cover-img" id="cover-img">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
-                <b>Upload an image</b>
-                <img src="#" alt="" hidden>
-                <span>
-                    <button class="btn btn-sm btn-red" id="remove">Remove</button>
-                    <button class="btn btn-sm btn-green" id="change">Change</button>
-                </span>
+            <label for="">Cover image</label>
+            <div id="cover-img">
+
+                <div class="cover-img-load" id="cover-img-load">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                    <b>Upload an image</b>
+                </div>
+
+                <div class="cover-img-preview" id="cover-img-preview">
+                    <span>
+                        <button type="button" class="btn btn-sm btn-red" id="remove">Remove</button>
+                        <button type="button" class="btn btn-sm btn-green" id="change">Change</button>
+                    </span>
+
+                </div>
+
             </div>
 
-            <input type="file" accept="image/*" name="cover-imamge" id="cover-img-inpt" hidden>
+            <input type="file" accept="image/*" name="cover_imamge" id="cover-img-inpt" hidden>
 
             <button class="btn">Submit</button>
             <a href="{% url 'index' %}"><button type="button" class="btn">Home</button></a>
@@ -152,11 +174,12 @@
 
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
-        const coverImgDiv = document.getElementById('cover-img')
-        const coverImgInpt = document.getElementById('cover-img-inpt')
+        const coverImgInpt = document.getElementById('cover-img-load')
+        const coverImgPre = document.getElementById('cover-img-preview')
+        const coverimg = document.getElementById('cover-img-inpt')
 
-        coverImgDiv.addEventListener('click', function() {
-            coverImgInpt.click()
+        coverImgInpt.addEventListener('click', function() {
+            coverimg.click()
         })
 
         coverImgInpt.addEventListener('change', (e) => {
@@ -165,10 +188,9 @@
                 const reader = new FileReader()
 
                 reader.onload = function(e) {
-                    const displaybox = coverImgDiv.querySelector('img')
-                    displaybox.src = `${e.target.result}`
-                    displaybox.removeAttribute("hidden")
-                    coverImgDiv.innerHTML = displaybox
+                    coverImgInpt.style.display = 'none'
+                    coverImgPre.style.display = 'flex'
+                    coverImgPre.style.background = `url(${e.target.result})`
                 }
 
                 reader.readAsDataURL(file)

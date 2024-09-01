@@ -117,12 +117,6 @@ The styles for the buttons
     cursor: pointer;
 }
 
-/* .btn:hover {
-    border-color: rgba(0, 0, 255, 0.5);
-    outline: none;
-    box-shadow: 0 0 10px rgba(0, 0, 255, 0.5);
-} */
-
 .btn:active {
     opacity: .7;
 }
