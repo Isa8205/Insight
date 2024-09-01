@@ -496,8 +496,7 @@
     </main>
     <script src="{% static 'js/single-page.js' %}"></script>
     <script>
-        let url = `ws://${window.location.host}/ws/comments-server/`
-        const Socket = new WebSocket(url)
+        const Socket = new WebSocket(`ws://${window.location.host}/ws/comments-server/`)
     
         // Connection opened
         Socket.onopen = () => {
