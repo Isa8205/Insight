@@ -145,6 +145,7 @@ def upload(request):
             article.save()
 
             return render(request, 'upload.html', {'message': 'Upload successful', 'form': ArticleForm()})
+        
         else:
             message = 'Upload failed'
             error = form.errors
@@ -201,7 +202,6 @@ def update_dislike_count(request):
     articleid =int(data.get('articleId'))
     action = data.get('action')
     article = Articles.objects.get(id = articleid)
-    print(data)
 
     if action == 'Add':
         dislike = ArticleDislikes()
