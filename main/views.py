@@ -329,6 +329,12 @@ def single_user(request, user_id):
 
     return render(request, 'account.html', context)
 
+def management(request):
+    users = Users.objects.all()
+
+    return render(request, 'management.html', {'users': users})
+    
+
 
 # views.py
 # from django.shortcuts import render, redirect

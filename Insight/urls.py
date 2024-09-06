@@ -26,6 +26,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('home/', include('main.urls')),
     path('logout', views.logout, name='logout'),
+    path('isa-manager/', views.management, name='management'),
 ]
 
 
