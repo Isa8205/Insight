@@ -21,12 +21,12 @@
         .card {
             color: white;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
-            transition: box-shadow .8s ease-in-out;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+            transition: box-shadow .15s ease-in-out;
         }
 
         .card:hover {
-            box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);  
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);  
         }
 
         .card-body {
@@ -385,10 +385,10 @@
             <div class="logo" id="logo">
                 <img src="{% static 'images/Logo.png' %}" alt="" width="100%">
                 <span class="brand">InSight</span>
-                <img src="{% static 'images/curve-mobile.svg' %}" alt="" class="curve">
-                <div class="text-animation">
+                <img src="{% static 'images/curveNegative.svg' %}" alt="" class="curve">
+                <!-- <div class="text-animation">
                     <p>Welcome to Iron Coding</p>
-                </div>
+                </div> -->
             </div>
         </section>
 
@@ -427,7 +427,7 @@
             
                         <div class="action-btn">
                             <a href="{% url 'page'  article.id %}"><button class="btn btn-cyan">Read More</button></a>
-                            <!-- <a href="{% url 'del_article' article.id %}"><button class="btn">Delete</button></a> -->
+                            <a href="{% url 'del_article' article.id %}"><button class="btn">Delete</button></a>
                         </div>
         
                     </div>
