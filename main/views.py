@@ -16,7 +16,7 @@ from main.models import ArticleDislikes, ArticleSaves, ArticleViews, Articles, A
 
 # Create your views here.
 def index(request):
-    articles = Articles.objects.all()
+    articles = Articles.objects.all().order_by('-created_at')
     context = {
         'articles': articles,
         'MEDIA_URL': settings.MEDIA_URL
@@ -321,13 +321,16 @@ def del_article(request, article_id):
 
 def single_user(request, user_id):
     user = get_object_or_404(Users, id=user_id)
+    articles = Articles.objects.filter(author=user).order_by('-created_at')
 
     context = {
         'data': user,
+        'articles': articles,
         'MEDIA_URL': settings.MEDIA_URL,
     }
 
     return render(request, 'account.html', context)
+
 
 def management(request):
     users = Users.objects.all()
