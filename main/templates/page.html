@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ article.title }}</title>
     <link rel="stylesheet" href="{% static 'css/main.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 
     <style>
         * {
@@ -35,7 +37,7 @@
             gap: 10px;
             justify-content: space-between;
             align-items: center;
-            background-color: white;
+            background-color: #001220;
             padding-inline: 15px;
             padding-block: 5px;
         }
@@ -188,12 +190,12 @@
 
     <nav>
         <div class="logo">
-            <a href="{% url 'index' %}"><span>InSight</span></a>
+            <a href="{% url 'index' %}"><i class="fa fa-arrow-left"></i></a>
         </div>
-        <div class="search-box">
+        <!-- <div class="search-box">
             <input type="search" name="search" id="search">
             <button>Search</button>
-        </div>
+        </div> -->
         <div class="profile">
             <img src="{{ MEDIA_URL }}{{ user.profile }}" alt="{{ user.username }}">
         </div>
@@ -494,6 +496,10 @@
     
         </section> -->
     </main>
+
+    <footer>
+        <p>&copy; 2024 CodverseTech. All rights reserved.</p>
+    </footer>
     <script>        
         document.addEventListener('DOMContentLoaded', function() {
             const  articleId = "{{ article.id }}"

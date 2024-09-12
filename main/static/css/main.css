@@ -101,7 +101,7 @@ The styles for the content div
 The styles for the buttons 
 ------------------------------------------------------------------------------------------------------
 */
-.btn {
+/* .btn {
     --btn-background: rgb(43, 45, 66);
     --btn-text-color: #fff;
     --padding-inline: 20px;
@@ -112,7 +112,6 @@ The styles for the buttons
     padding-block: var(--padding-block);
     padding-inline: var(--padding-inline);
     margin-inline: 5px;
-    /* margin-block: 10px; */
     border: none;
     cursor: pointer;
 }
@@ -184,7 +183,7 @@ The styles for the buttons
  .btn-cyan:hover {
     --btn-background: #2e99ce;
     --btn-text-color: white;
- }
+ } */
 
 /* 
 ----------------------------------------------------------------------------------------
