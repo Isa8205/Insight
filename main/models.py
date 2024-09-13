@@ -30,7 +30,6 @@ class Users(AbstractUser):
         return None
     
 
-
 class Articles(models.Model):
     author = models.ForeignKey(Users, on_delete=models.PROTECT, related_name='articles')
     title = models.CharField(max_length=100, null=False)
